@@ -15,7 +15,7 @@ namespace Task_02.Game
             get => _x;
             set
             {
-                if (value > Field.Width || value < Field.Width)
+                if (value > Field.Width || value < 0)
                 {
                     throw new ArgumentException("Incorrecrt position;");
                 }
@@ -27,7 +27,7 @@ namespace Task_02.Game
             get => _y;
             set
             {
-                if (value > Field.Height || value < Field.Height)
+                if (value > Field.Height || value < 0)
                 {
                     throw new ArgumentException("Incorrecrt position;");
                 }
