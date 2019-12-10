@@ -13,9 +13,17 @@ namespace Task_03
             //Task 3.1
             Lost();
             Console.WriteLine();
+
             //Task 3.2
             WordFrequency();
-            Console.ReadKey();
+            Console.WriteLine();
+
+            //Task 3.3
+            DynamicArrayAction();
+            Console.WriteLine();
+
+
+            Console.ReadLine();
 
         }
 
@@ -86,11 +94,7 @@ namespace Task_03
                 {
                     cleanText.Append(englishText[i]);
                 }
-                else if (Char.IsPunctuation(englishText[i]))
-                {
-
-                }
-                else
+                else if (!Char.IsPunctuation(englishText[i]))
                 {
                     cleanText.Append(englishText[i]);
                 }
@@ -121,6 +125,19 @@ namespace Task_03
             {
                 Console.WriteLine("{0} : {1}", item.Key, item.Value);
             }
+        }
+
+        //Task 3.3
+        public static void DynamicArrayAction()
+        {
+            Console.WriteLine("\nTask 3.3 and 3.4 DynamicArray:");
+            int[] newArr = new int[] { 1, 2, 3, 4, 4, 5, 6 };
+            DynamicArray.DynamicArray<int> myArr = new DynamicArray.DynamicArray<int>(newArr);
+            foreach (var item in myArr)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine("Length: {0}, Capacity {1};", myArr.Length, myArr.Capacity);
         }
     }
 }

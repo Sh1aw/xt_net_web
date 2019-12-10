@@ -7,15 +7,23 @@ using System.Threading.Tasks;
 
 namespace Task_03.DynamicArray
 {
-    class DynamicArray<T>: IEnumerable<T>, IEnumerable
+    class DynamicArray<T>: IEnumerable<T>, IEnumerable, ICloneable
     {
         public int Length { get; private set; }
         public int Capacity
         {
             get => array.Length;
+            set
+            {
+                if (value<=0)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                ResizeArray(value);
+            }
         }
 
-        private T[] array;
+        protected T[] array;
         public DynamicArray()
         {
             array = new T[8];
@@ -43,19 +51,33 @@ namespace Task_03.DynamicArray
         {
             get
             {
-                if (index > Length || index < 0)
+                if (index > Length || index < -Length)
                 {
                     throw new ArgumentOutOfRangeException();
                 }
-                return array[index];
+                if (index>=0)
+                {
+                    return array[index];
+                }
+                else
+                {
+                    return array[Length + index];
+                }
             }
             set
             {
-                if (index > Length || index < 0)
+                if (index > Length || index < -Length)
                 {
                     throw new ArgumentOutOfRangeException();
                 }
-                array[index] = value;
+                if (index >= 0)
+                {
+                    array[index] = value;
+                }
+                else
+                {
+                    array[Length + index] = value;
+                }
             }
         }
         public void Add(T something)
@@ -146,20 +168,22 @@ namespace Task_03.DynamicArray
         private void ResizeArray(int newCapacity)
         {
             T[] newArray = new T[newCapacity];
-            int iU = 0;
+            int tempCounter = 0;
             if (newCapacity <= array.Length)
             {
-                iU = newCapacity;
+                tempCounter = newCapacity;
             }
             else
             {
-                iU = array.Length;
+                tempCounter = array.Length;
             }
-            for (int i = 0; i < iU; i++)
+            for (int i = 0; i < tempCounter; i++)
             {
                 newArray[i] = array[i];
             }
             array = newArray;
+            //
+            Length = tempCounter;
         }
 
 
@@ -176,6 +200,11 @@ namespace Task_03.DynamicArray
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public object Clone()
+        {
+            return array.Clone();
         }
     }
 }

@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Task_03.DynamicArray
 {
-    class DynamicArrayEnum<T> : IEnumerator<T>
+    class CycledDynamicArrayEnum<T>: IEnumerator<T>
     {
         public T[] array;
 
         private int index = -1;
         private int length;
-        public DynamicArrayEnum(T[] array, int length)
+        public CycledDynamicArrayEnum(T[] array, int length)
         {
             this.array = array;
             this.length = length;
@@ -43,22 +43,17 @@ namespace Task_03.DynamicArray
 
         public bool MoveNext()
         {
-            index++;
-            return index < length;
+            if (index + 1 < length)
+            {
+                index++;
+                return true;
+            }
+            else
+            {
+                index = 0;
+                return true;
+            }
         }
-        //public bool MoveNext()
-        //{
-        //    if (index + 1 < length)
-        //    {
-        //        index++;
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        index = 0;
-        //        return true;
-        //    }
-        //}
 
         public void Reset()
         {
