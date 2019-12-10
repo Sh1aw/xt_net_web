@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Task_03.DynamicArray
 {
-    class DynamicArray<T>
+    class DynamicArray<T>: IEnumerable<T>, IEnumerable
     {
         public int Length { get; private set; }
         public int Capacity
@@ -25,11 +26,15 @@ namespace Task_03.DynamicArray
             array = new T[size];
             Length = 0;
         }
-        public DynamicArray(IEnumerable<T> coll)
+        public DynamicArray(IEnumerable<T> enums)
         {
-            array = new T[coll.Count()];
-            array = coll.ToArray();
-            Length = coll.Count();
+            array = new T[enums.Count()];
+            Length = 0;
+            foreach (var item in enums)
+            {
+                array[Length] = item;
+                Length++;
+            }
 
         }
 
@@ -68,11 +73,11 @@ namespace Task_03.DynamicArray
             {
                 ResizeArray(Length + enums.Count());
             }
-            for (int i = 0; i < enums.Count(); i++)
+            foreach (var item in enums)
             {
-                array[Length + i] = enums.ToArray()[i];
+                array[Length] = item;
+                Length++;
             }
-            Length = Length + enums.Count();
         }
         public bool Remove(T elem)
         {
@@ -157,5 +162,20 @@ namespace Task_03.DynamicArray
             array = newArray;
         }
 
+
+        public DynamicArrayEnum<T> GetEnumerator()
+        {
+            return new DynamicArrayEnum<T>(array, Length);
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }
