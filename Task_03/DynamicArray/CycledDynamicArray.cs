@@ -14,6 +14,7 @@ namespace Task_03.DynamicArray
             : base() { }
         public CycledDynamicArray(int size)
             : base(size) { }
+
         public new CycledDynamicArrayEnum<T> GetEnumerator()
         {
             return new CycledDynamicArrayEnum<T>(array,Length);
