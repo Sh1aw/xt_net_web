@@ -31,11 +31,19 @@ namespace Task_03.DynamicArray
         }
         public DynamicArray(int size)
         {
+            if (size<=0)
+            {
+                throw new ArgumentException();
+            }
             array = new T[size];
             Length = 0;
         }
         public DynamicArray(IEnumerable<T> enums)
         {
+            if (enums == null)
+            {
+                throw new ArgumentException();
+            }
             array = new T[enums.Count()];
             Length = 0;
             foreach (var item in enums)
@@ -91,6 +99,10 @@ namespace Task_03.DynamicArray
         }
         public void AddRange(IEnumerable<T> enums)
         {
+            if (enums == null)
+            {
+                throw new ArgumentException();
+            }
             if ((Length + enums.Count()) >= Capacity)
             {
                 ResizeArray(Length + enums.Count());
