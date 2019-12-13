@@ -9,12 +9,14 @@ namespace Task_04
 {
     class ISeekYou
     {
-        public static int numberOfTimes = 100;
+        public static int numberOfTimes = 1000;
         public static int arraySize = 500;
         public static int[] array = new int[arraySize];
         static public void Init()
         {
-            Console.WriteLine("\nTask 4.6. I seek you\nCount of numbers in each array: {0};\nNumber of Times: {1}",arraySize,numberOfTimes);
+            Console.WriteLine("\nTask 4.6. I seek you\n" +
+                "Count of numbers in each array: {0};" +
+                "\nNumber of Times: {1}",arraySize,numberOfTimes);
             RandomizeArray(array);
             TestStandartMethod();
             Console.WriteLine();
@@ -63,8 +65,6 @@ namespace Task_04
             }
             return positiveCount;
         }
-
-
         static void TestStandartMethod()
         {
             Stopwatch timer = new Stopwatch();
