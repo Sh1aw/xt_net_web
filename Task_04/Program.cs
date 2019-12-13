@@ -9,13 +9,13 @@ namespace Task_04
 {
     class Program
     {
-        public static int[] arr = new int[] { 1, 24, 56, 2, 4, 6 };
         static void Main(string[] args)
         {
             CustomSortDemo();
             NumberArraySum();
             ToIntOrNotToInt();
             SortingUnit();
+            ISeekYou.Init();
             Console.ReadKey();
         }
 
@@ -23,6 +23,10 @@ namespace Task_04
         static T[] MySort<T>(in T[] array, Func<T, T, Boolean> predict)
         {
             if (array == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (predict == null)
             {
                 throw new ArgumentNullException();
             }
@@ -72,7 +76,7 @@ namespace Task_04
         {
             foreach (var item in en)
             {
-                Console.WriteLine(item);
+                Console.WriteLine(item.ToString());
             }
         }
 
@@ -80,19 +84,24 @@ namespace Task_04
         // Task 4.3 Sorting unit
         public static void SortingUnit()
         {
+            int[] arr = new int[] { 1, 24, 56, 2, 4, 6 };
             Console.WriteLine("\nTask 4.3. Sorting Unit:");
             Notify += NotifyHandler;
+            string[] sarr = new string[] { "fsfds", "dasdad", "dsa" };
             StartSortInNewThread(arr, (x, j) => x < j);
+            StartSortInNewThread(sarr, sortString);
+            Console.WriteLine("Press Enter for out arrays");
+            Console.ReadLine();
+            Console.WriteLine("\narray 1:");
+            OutEnum(arr);
+            Console.WriteLine("\narray 2:");
+            OutEnum(sarr);
         }
         public static void NotifyHandler(String s)
         {
             Console.WriteLine(s);
-            foreach (var item in arr)
-            {
-                Console.WriteLine(item);
-            }
         }
-        public static event Action<string> Notify;
+        public static event Action<string> Notify = delegate { };
         static void StartSortInNewThread<T>(T[] array, Func<T, T, bool> deleg)
         {
             new Thread(() => {
@@ -105,6 +114,7 @@ namespace Task_04
         // Task 4.4 Number Array Sum
         public static void NumberArraySum()
         {
+            int[] arr = new int[] { 1, 24, 56, 2, 4, 6 };
             Console.WriteLine("\nTask 4.4. Number Array Sum:");
             OutEnum(arr);
             Console.WriteLine("Sum of Array: " + arr.SumOfArray());
