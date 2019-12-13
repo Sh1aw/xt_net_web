@@ -77,7 +77,11 @@ namespace Task_04
                 times[i] = timer.Elapsed;
             }
             Array.Sort(times);
-            Console.WriteLine("Test№1 - Standart Method\nSlowest: {0}; Fastest: {1}; Median: {2}", times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
+            Console.WriteLine("Test№1 - Standart Method\n" +
+                "Slowest: {0};" +
+                " Fastest: {1};" +
+                " Median: {2}",
+                times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
 
         }
         static void TestDelegateInstance()
@@ -92,7 +96,11 @@ namespace Task_04
                 times[i] = timer.Elapsed;
             }
             Array.Sort(times);
-            Console.WriteLine("Test№2 - Delegate instance\nSlowest: {0}; Fastest: {1}; Median: {2}", times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
+            Console.WriteLine("Test№2 - Delegate instance\n" +
+                "Slowest: {0};" +
+                " Fastest: {1};" +
+                " Median: {2}",
+                times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
 
         }
         static void TestAninymousMethod()
@@ -107,7 +115,11 @@ namespace Task_04
                 times[i] = timer.Elapsed;
             }
             Array.Sort(times);
-            Console.WriteLine("Test№3  - Anonymous Method\nSlowest: {0}; Fastest: {1}; Median: {2}", times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
+            Console.WriteLine("Test№3  - Anonymous Method\n" +
+                "Slowest: {0};" +
+                " Fastest: {1}; " +
+                "Median: {2}",
+                times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
 
         }
         static void TestLambdaExtension()
@@ -122,7 +134,11 @@ namespace Task_04
                 times[i] = timer.Elapsed;
             }
             Array.Sort(times);
-            Console.WriteLine("Test№4  - Lambda Expression\nSlowest: {0}; Fastest: {1}; Median: {2}", times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
+            Console.WriteLine("Test№4  - Lambda Expression\n" +
+                "Slowest: {0}; " +
+                "Fastest: {1}; " +
+                "Median: {2}",
+                times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
 
         }
         static void TestLinq()
@@ -137,7 +153,11 @@ namespace Task_04
                 times[i] = timer.Elapsed;
             }
             Array.Sort(times);
-            Console.WriteLine("Test№5  - LINQ\nSlowest: {0}; Fastest: {1}; Median: {2}", times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
+            Console.WriteLine("Test№5  - LINQ\n" +
+                "Slowest: {0};" +
+                " Fastest: {1};" +
+                " Median: {2}",
+                times[numberOfTimes - 1], times[0], times[numberOfTimes / 2]);
 
         }
     }
