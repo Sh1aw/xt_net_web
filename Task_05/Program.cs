@@ -11,6 +11,7 @@ namespace Task_05
 {
     class Program
     {
+        //default location of target directory: bin\Debug\MyGit
         const string DIR = "MyGit";
         const string LOG_FILE = "log.json";
         static List<MyFile> logList = new List<MyFile>();
