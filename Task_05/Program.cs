@@ -17,11 +17,7 @@ namespace Task_05
 
         static void Main(string[] args)
         {
-            if (!Directory.Exists(DIR))
-            {
-                Directory.CreateDirectory(DIR);
-            }
-
+            InitDir();
             FileSystemWatcher fw = new FileSystemWatcher(DIR, "*.txt");
             fw.EnableRaisingEvents = true;
             fw.IncludeSubdirectories = true;
@@ -191,6 +187,16 @@ namespace Task_05
                 }
             }
             return choice;
+        }
+
+        static void InitDir()
+        {
+            if (!Directory.Exists(DIR))
+            {
+                Directory.CreateDirectory(DIR);
+            }
+            Stream myStream;
+            using (myStream = File.Open(LOG_FILE, FileMode.OpenOrCreate, FileAccess.Write));          
         }
     }
 }
