@@ -60,7 +60,14 @@ namespace Task_05
         {
             using (StreamReader sr = new StreamReader(LOG_FILE))
             {
-                logList = new List<MyFile>(JsonConvert.DeserializeObject<List<MyFile>>(sr.ReadToEnd()));
+                string s = sr.ReadToEnd();
+                if (!(s.Length>0))
+                {
+                    Console.WriteLine("List is empty!");
+                    Console.ReadKey();
+                    return;
+                }
+                logList = new List<MyFile>(JsonConvert.DeserializeObject<List<MyFile>>(s));
             }
             Console.WriteLine("App in BackUp mode now!");
             while (true)
@@ -93,10 +100,7 @@ namespace Task_05
                 }
                 Console.WriteLine("BackUp was done! Current directory state: " + dataInput);
             }
-        }
-
-        
-
+        }    
         static void UnicFileHandler(object sender, FileSystemEventArgs args)
         {
             string value = "";
