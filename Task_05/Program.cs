@@ -106,14 +106,16 @@ namespace Task_05
             }
             lock (logList)
             {
-                logList.Add(new MyFile(args.Name, value, DateTime.Now, args.ChangeType.ToString(), args.FullPath, args.Name, args.FullPath));
+                logList.Add(new MyFile(args.Name, value, DateTime.Now,
+                    args.ChangeType.ToString(), args.FullPath, args.Name, args.FullPath));
             }
         }
         static void RenamedFileHandler(object sender, RenamedEventArgs args)
         {
             lock (logList)
             {
-                logList.Add(new MyFile(args.Name, FileTools.ReadNewValue(args.FullPath), DateTime.Now, args.ChangeType.ToString(), args.FullPath, args.OldName, args.OldFullPath));
+                logList.Add(new MyFile(args.Name, FileTools.ReadNewValue(args.FullPath), 
+                    DateTime.Now, args.ChangeType.ToString(), args.FullPath, args.OldName, args.OldFullPath));
             }
         }
 
@@ -164,7 +166,8 @@ namespace Task_05
                 }
                 else
                 {
-                    Console.WriteLine("Incorrect input! Try again and follow this date format: dd/mm/yyyy hh:mm:ss");
+                    Console.WriteLine("Incorrect input! Try again and " +
+                        "follow this date format: dd/mm/yyyy hh:mm:ss");
                 }
             }
             return date;
