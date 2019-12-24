@@ -9,7 +9,7 @@ namespace Task_05
     class MyFile
     {
         public string Name { get; private set; }
-        public DateTime TimeOfCreation { get; set; } // cant desirialize json, with private setter of time-prop
+        public DateTime TimeOfCreation { get; set; }
         public string Value { get; private set; }
         public string Reason { get; private set; }
         public string FullPath { get; private set; }
