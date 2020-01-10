@@ -11,18 +11,8 @@ namespace Task_07
     {
         public static bool CheckDataContains(string text)
         {
-            Regex r1 = new Regex(@"(((0[1-9]|[12]\d)
-                                        -(0[1-9])|1[012])|30-(0[13-9]|1[012])|31
-                                        -(0[13578]|1[02]))-(\d{4})");
+            Regex r1 = new Regex(@"(((0[1-9]|[12]\d)-(0[1-9])|1[012])|30-(0[13-9]|1[012])|31-(0[13578]|1[02]))-(\d{4})");
             return r1.IsMatch(text);
-            //if (r1.IsMatch(text))
-            //{
-            //    Console.WriteLine($"Text \"{text}\n CONTAINS date with format dd-mm-yyyy!");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("The text does NOT CONTAIN a date");
-            //}
         }
 
         public static string ReplaceHtmlTags(string text)
@@ -51,33 +41,26 @@ namespace Task_07
             return emails;
         }
 
-        public static TypeofNumber CheckDigit(String text)
+        public static TypesOfNumber CheckNumber(String text)
         {
             Regex normal = new Regex(@"^(((-)?\d+)((\.)\d+)?)$");
             Regex scine = new Regex(@"^((-?\d+)(\.\d+)?)(e((-?\d)+)?)$");
             if (normal.IsMatch(text))
             {
-                return TypeofNumber.SimpleNumber;
+                return TypesOfNumber.SimpleNumber;
             }
             if(scine.IsMatch(text))
             {
-                return TypeofNumber.ScineNumber;
+                return TypesOfNumber.ScienceNumber;
             }
 
-            return TypeofNumber.NotANumber;
+            return TypesOfNumber.NotANumber;
         }
 
-        public static int TimeMatchesCounter(String text)
+        public static int TimeMatchesCounter(string text)
         {
-            Regex r1 = new Regex("@([0-1]?[0-9]|2[0-3]):[0-5][0-9]");
+            Regex r1 = new Regex(@"(\b([0-1]?[0-9]|2[0-3]):[0-5][0-9])");
             return r1.Matches(text).Count;
         }
-    }
-
-    enum TypeofNumber
-    {
-        SimpleNumber,
-        ScineNumber,
-        NotANumber,
     }
 }
