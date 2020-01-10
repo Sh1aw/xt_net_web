@@ -10,7 +10,7 @@ namespace Task_04
     class ISeekYou
     {
         public static int numberOfTimes = 1000;
-        public static int arraySize = 500;
+        public static int arraySize = 50000;
         public static int[] array = new int[arraySize];
         static public void Init()
         {
