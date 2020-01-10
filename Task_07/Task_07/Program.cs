@@ -11,10 +11,10 @@ namespace Task_07
     {
         static void Main(string[] args)
         {
-            //DateExistance();
-            //HtmlReplacer();
-            //EmailFinder();
-            //NumberValidator();
+            DateExistance();
+            HtmlReplacer();
+            EmailFinder();
+            NumberValidator();
             TimeCounter();
             Console.ReadLine();
         }
