@@ -12,7 +12,7 @@ namespace Epam.ExtUsersLibrary.DAL
 {
     public class AwardDao : IAwardDao
     {
-        private static string _path = "awards.json";
+        private static string _path = "awards.json"; //default path is Epam.ExtUsersLibrary.ConsolePL\bin\Debug\
         internal static readonly Dictionary<int, Award> _awards = GetJSONData(_path);
 
         public Award Add(Award award)

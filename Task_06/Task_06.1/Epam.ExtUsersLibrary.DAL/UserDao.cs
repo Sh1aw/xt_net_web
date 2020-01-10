@@ -12,7 +12,7 @@ namespace Epam.ExtUsersLibrary.DAL
 {
     public class UserDao : IUserDao
     {
-        private static string _path = "users.JSON";
+        private static string _path = "users.JSON"; //default path is Epam.ExtUsersLibrary.ConsolePL\bin\Debug\
         private static readonly Dictionary<int, User> _users = GetJSONData(_path);
 
         public User Add(User user)
