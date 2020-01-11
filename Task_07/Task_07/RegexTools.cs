@@ -11,7 +11,7 @@ namespace Task_07
     {
         public static bool CheckDataContains(string text)
         {
-            Regex r1 = new Regex(@"(((0[1-9]|[12]\d)-(0[1-9])|1[012])|30-(0[13-9]|1[012])|31-(0[13578]|1[02]))-(\d{4})");
+            Regex r1 = new Regex(@"(((0[1-9]|[12]\d)-((0[1-9])|(1[012])))|(30-(0[13-9]|1[012]))|(31-(0[13578]|1[02])))-(\d{4})");
             return r1.IsMatch(text);
         }
 
@@ -32,7 +32,7 @@ namespace Task_07
 
         public static List<String> EmailFinder(String text)
         {
-            Regex r1 = new Regex(@"((([\dA-z]){1})([\w\\_\.\-]*)((([\dA-z]){1})@((([\dA-z]){1})(([\dA-z\-])*)([\dA-z]{1})\.)*)[A-z]{2,6})");
+            Regex r1 = new Regex(@"\b([a-z\d]([\w\.\-]*)([\da-z])@([\da-z]([\da-z\-]*)[\da-z]\.)+[a-z]{2,6})\b", RegexOptions.IgnoreCase);
             List<String> emails = new List<string>();
             foreach (Match item in r1.Matches(text))
             {
@@ -45,6 +45,7 @@ namespace Task_07
         {
             Regex normal = new Regex(@"^(((-)?\d+)((\.)\d+)?)$");
             Regex scine = new Regex(@"^((-?\d+)(\.\d+)?)(e((-?\d)+)?)$");
+            text = text.Trim(' ');
             if (normal.IsMatch(text))
             {
                 return TypesOfNumber.SimpleNumber;
@@ -59,7 +60,7 @@ namespace Task_07
 
         public static int TimeMatchesCounter(string text)
         {
-            Regex r1 = new Regex(@"(\b([0-1]?[0-9]|2[0-3]):[0-5][0-9])");
+            Regex r1 = new Regex(@"(\b(([0-1]?[0-9]|2[0-3]):[0-5][0-9])\b)");
             return r1.Matches(text).Count;
         }
     }

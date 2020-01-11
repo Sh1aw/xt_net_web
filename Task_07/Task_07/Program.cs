@@ -21,11 +21,13 @@ namespace Task_07
 
         private static void DateExistance()
         {
-            Console.WriteLine("\nTask 7.1 Date Existance\nEnter text with date in format dd-mm-yyyy:");
+            Console.WriteLine("\nTask 7.1 Date Existance" +
+                              "\nEnter text with date in format dd-mm-yyyy:");
             string text = Console.ReadLine();
             if (RegexTools.CheckDataContains(text))
             {
-                Console.WriteLine($"Text \"{text}\n CONTAINS date with format dd-mm-yyyy!");
+                Console.WriteLine($"Text \"{text}\"\n" +
+                                  $" CONTAINS date with format dd-mm-yyyy!");
             }
             else
             {
@@ -35,7 +37,8 @@ namespace Task_07
 
         private static void HtmlReplacer()
         {
-            Console.WriteLine("\nTask 7.2 Html Replacer\nEnter text with html tags:");
+            Console.WriteLine("\nTask 7.2 Html Replacer" +
+                              "\nEnter text with html tags:");
             string text = Console.ReadLine();
             string afterReplace = RegexTools.ReplaceHtmlTags(text);
             Console.WriteLine("Text after replacing:");
@@ -44,7 +47,8 @@ namespace Task_07
 
         private static void EmailFinder()
         {
-            Console.WriteLine("\nTask 7.3 Email Finder\nEnter text with emails:");
+            Console.WriteLine("\nTask 7.3 Email Finder" +
+                              "\nEnter text with emails:");
             string text = Console.ReadLine();
             List<String> emailsList = RegexTools.EmailFinder(text);
             Console.WriteLine("Emails:");
@@ -56,7 +60,8 @@ namespace Task_07
 
         private static void NumberValidator()
         {
-            Console.WriteLine("\nTask 7.4 Number Validator\nEnter number:");
+            Console.WriteLine("\nTask 7.4 Number Validator" +
+                              "\nEnter number:");
             string number = Console.ReadLine();
             TypesOfNumber currenNumber = RegexTools.CheckNumber(number);
             if (currenNumber == TypesOfNumber.SimpleNumber)
@@ -75,7 +80,8 @@ namespace Task_07
 
         private static void TimeCounter()
         {
-            Console.WriteLine("\nTask 7.5 TimeCounter\nEnter text with time in format hh:ss or h:ss:");
+            Console.WriteLine("\nTask 7.5 TimeCounter" +
+                              "\nEnter text with time in format hh:ss or h:ss:");
             string text = Console.ReadLine();
             int count = RegexTools.TimeMatchesCounter(text);
             Console.WriteLine("Count of time matches: "+count);
