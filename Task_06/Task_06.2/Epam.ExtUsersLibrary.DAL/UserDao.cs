@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,10 @@ namespace Epam.ExtUsersLibrary.DAL
 {
     public class UserDao : IUserDao
     {
-        private static string _path = "users.JSON"; //default path is Epam.ExtUsersLibrary.ConsolePL\bin\Debug\
+        private static readonly string FolderName = ConfigurationManager.AppSettings.Get("DestFolder");
+        private static readonly string FileName = ConfigurationManager.AppSettings.Get("NameUserFile");
+        private static readonly string _path = Path.Combine(FolderName,FileName); //default path is Epam.ExtUsersLibrary.ConsolePL\bin\Debug\dataStorage,
+                                                                                  //you can change folder path and files names in App.config
         private static readonly Dictionary<int, User> _users = GetJSONData(_path);
 
         public User Add(User user)
@@ -76,6 +80,7 @@ namespace Epam.ExtUsersLibrary.DAL
         }
         private static Dictionary<int,User> GetJSONData(String path)
         {
+            Directory.CreateDirectory(FolderName);
             Stream myStream;
             using (myStream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Read))
             {

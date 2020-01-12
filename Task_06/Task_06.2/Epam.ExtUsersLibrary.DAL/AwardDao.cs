@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,10 @@ namespace Epam.ExtUsersLibrary.DAL
 {
     public class AwardDao : IAwardDao
     {
-        private static string _path = "awards.json"; //default path is Epam.ExtUsersLibrary.ConsolePL\bin\Debug\
+        private static readonly string FolderName = ConfigurationManager.AppSettings.Get("DestFolder");
+        private static readonly string FileName = ConfigurationManager.AppSettings.Get("NameAwardFile");
+        private static readonly string  _path = Path.Combine(FolderName,FileName); //default path is Epam.ExtUsersLibrary.ConsolePL\bin\Debug\dataStorage,
+                                                                                    //you can change folder path and files names in App.config
         internal static readonly Dictionary<int, Award> _awards = GetJSONData(_path);
 
         public Award Add(Award award)
@@ -47,6 +51,7 @@ namespace Epam.ExtUsersLibrary.DAL
 
         private static Dictionary<int, Award> GetJSONData(String path)
         {
+            Directory.CreateDirectory(FolderName);
             Stream myStream;
             using (myStream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Read))
             {
