@@ -17,8 +17,9 @@ namespace Task_05
             Console.WriteLine("Select app mode:\n1." +
                 " Track changes in target directory;\n2." +
                 " Restore directory-state by date and time;\n[1/2]\n");
-            int UserChoice = GetUserChoiceInput();
-            switch (UserChoice)
+            var userChoice = GetUserChoiceInput();
+            myGit.InitGit();
+            switch (userChoice)
             {
                 case 1:
                     {
@@ -31,8 +32,10 @@ namespace Task_05
                         break;
                     }
             }
+
+            Console.ReadLine();
         }
-        static int GetUserChoiceInput()
+        private static int GetUserChoiceInput()
         {
             int choice = 0;
             bool flag = true;

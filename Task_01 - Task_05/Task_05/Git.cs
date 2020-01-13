@@ -3,6 +3,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,62 +12,53 @@ namespace Task_05
 {
     class Git
     {
-        //default location of target directory: bin\Debug\MyGit
-        private const string DIR = "MyGit";
-        private const string LOG_FILE = "log.json";
-        static List<MyFile> logList;
+        /*
+        Default location of target directory: bin\Debug\MyGit 
+        (folder created when you choose watching mode in 1st time,
+        or you can create your own folder and specify path in App.config)
+        Default location of log file is directory: bin\Debug\
+        You can change git folder path and log file path in App.Config
+        */
+        private static readonly string Dir = ConfigurationManager.AppSettings.Get("GitFolderPath");
+        private static readonly string LogFile = ConfigurationManager.AppSettings.Get("DestLogFilePath");
+        private static List<MyFile> _logList;
 
         public Git()
         {
-            logList = new List<MyFile>();
+            _logList = GetJSONData(LogFile);
         }
 
         public void Watching()
         {
-            CreateDir(DIR);
-            CreateLogFile(LOG_FILE);
-            InitWatchers();
-
-            Console.WriteLine("App in track mode now!...." +
-                                "\nTo exit tracking mode(and application), press Escape");
-            while (Console.ReadKey().Key != ConsoleKey.Escape)
-            { }
-            ReWriteLog();
+            Console.WriteLine("App in track mode now!.... " +
+                              "\nTracking folder location: "+ Path.GetFullPath(Dir)+
+                              "\nTo exit tracking mode(and application), press Escape");
+            while (Console.ReadKey().Key != ConsoleKey.Escape){};
         }
 
         public void BackUp()
         {
-            CreateDir(DIR);
-            CreateLogFile(LOG_FILE);
-            InitWatchers();
-
-            using (StreamReader sr = new StreamReader(LOG_FILE))
+            lock (_logList)
             {
-                string s = sr.ReadToEnd();
-                if (!(s.Length > 0))
+                if (_logList.Count < 1)
                 {
-                    Console.WriteLine("List is empty!");
-                    Console.ReadKey();
+                    Console.WriteLine("Log file is empty. You need to use Watching mode first!");
                     return;
                 }
-                logList = new List<MyFile>(JsonConvert.DeserializeObject<List<MyFile>>(s));
             }
             Console.WriteLine("App in BackUp mode now!");
             while (true)
             {
                 Console.WriteLine("\nEnter target date and time!" +
-                                " Target date format is: dd\\mm\\yyyy hh:mm:ss");
+                                  "Target date format is: dd.mm.yyyy hh:mm:ss");
                 DateTime dataInput = GetDataUserInput();
-
                 List<MyFile> OutlogList = new List<MyFile>();
-                ClearDir(DIR);
-
-                lock (logList)
+                ClearDir(Dir);
+                lock (_logList)
                 {
-                    OutlogList = logList.Where(x => x.TimeOfCreation < dataInput).ToList();
+                    OutlogList = _logList.Where(x => x.TimeOfCreation < dataInput).ToList();
                 }
                 GetLastStateFileHandler(OutlogList, GetLastStateFile);
-
                 var newListGroups = OutlogList.GroupBy(x => x.Name);
                 foreach (var item in newListGroups)
                 {
@@ -76,93 +68,77 @@ namespace Task_05
                         CreateStateFile(temp1);
                     }
                 }
-                using (StreamWriter w = new StreamWriter(LOG_FILE, false))
-                {
-                    lock (logList)
-                    {
-                        w.WriteLine(JsonConvert.SerializeObject(logList, Formatting.Indented));
-                    }
-                }
                 Console.WriteLine("BackUp was done! Current directory state: " + dataInput);
             }
         }
 
-        private static void UnicFileHandler(object sender, FileSystemEventArgs args)
+        private static void UnifiedFileHandler(object sender, FileSystemEventArgs args)
         {
             string value = "";
             if (args.ChangeType.ToString() == "Changed" || args.ChangeType.ToString() == "Created")
             {
                 value = ReadNewValue(args.FullPath);
             }
-            lock (logList)
+            lock (_logList)
             {
-                logList.Add(new MyFile(args.Name, value, DateTime.Now,
+                _logList.Add(new MyFile(args.Name, value, DateTime.Now,
                     args.ChangeType.ToString(), args.FullPath, args.Name, args.FullPath));
             }
+            SynchronizeJSON(LogFile);
         }
         private static void RenamedFileHandler(object sender, RenamedEventArgs args)
         {
-            lock (logList)
+            lock (_logList)
             {
-                logList.Add(new MyFile(args.Name, ReadNewValue(args.FullPath),
+                _logList.Add(new MyFile(args.Name, ReadNewValue(args.FullPath),
                     DateTime.Now, args.ChangeType.ToString(), args.FullPath, args.OldName, args.OldFullPath));
             }
+            SynchronizeJSON(LogFile);
         }
 
-        private static void InitWatchers()
+        public void InitGit()
         {
-            FileSystemWatcher fw = new FileSystemWatcher(DIR, "*.txt");
+            CreateDir(Dir);
+            FileSystemWatcher fw = new FileSystemWatcher(Dir, "*.txt");
             fw.EnableRaisingEvents = true;
             fw.IncludeSubdirectories = true;
-            fw.Deleted += new FileSystemEventHandler(UnicFileHandler);
-            fw.Created += new FileSystemEventHandler(UnicFileHandler);
-            fw.Changed += new FileSystemEventHandler(UnicFileHandler);
+            fw.Deleted += new FileSystemEventHandler(UnifiedFileHandler);
+            fw.Created += new FileSystemEventHandler(UnifiedFileHandler);
+            fw.Changed += new FileSystemEventHandler(UnifiedFileHandler);
             fw.Renamed += new RenamedEventHandler(RenamedFileHandler);
         }
 
-        //Append new part of logs in log file
-        private static void ReWriteLog()
+        private static void SynchronizeJSON(String path)
         {
-            List<MyFile> tempList = new List<MyFile>();
-            using (StreamReader sr = new StreamReader(LOG_FILE))
+            using (StreamWriter myStreamWriter = File.CreateText(path))
             {
-                string s = sr.ReadToEnd();
-                if (s.Length != 0)
+                lock (_logList)
                 {
-                    tempList = new List<MyFile>(JsonConvert.DeserializeObject<List<MyFile>>(s));
-                    lock (logList)
-                    {
-                        foreach (var item in logList)
-                        {
-                            tempList.Add(item);
-                        }
-                    }
+                    myStreamWriter.WriteLine(JsonConvert.SerializeObject(_logList, Formatting.Indented));
                 }
+                
             }
-            using (StreamWriter w = new StreamWriter(LOG_FILE, append: false))
-            {
-                if (tempList.Count > 0)
-                {
-                    w.Write(JsonConvert.SerializeObject(tempList, Formatting.Indented));
-                }
-                else
-                {
-                    w.Write(JsonConvert.SerializeObject(logList, Formatting.Indented));
-                }
+        }
 
+        private static List<MyFile> GetJSONData(String path)
+        {
+            Stream myStream;
+            using (myStream = File.Open(path, FileMode.OpenOrCreate, FileAccess.Read))
+            {
+                StreamReader myStreamReader = new StreamReader(myStream);
+                string s = myStreamReader.ReadToEnd();
+                var logListTemp = new List<MyFile>();
+                if (!(s.Length > 0))
+                {
+                    return logListTemp;
+                }
+                logListTemp = new List<MyFile>(JsonConvert.DeserializeObject<List<MyFile>>(s));
+                return logListTemp;
             }
         }
         private static void CreateDir(string dirPath)
         {
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
-        }
-        private static void CreateLogFile(string logFilePath)
-        {
-            Stream myStream;
-            using (myStream = File.Open(logFilePath, FileMode.OpenOrCreate, FileAccess.Write)) ;
+            Directory.CreateDirectory(dirPath);
         }
         private static DateTime GetDataUserInput()
         {
@@ -266,5 +242,6 @@ namespace Task_05
                 }
             }
         }
+
     }
 }
