@@ -1,0 +1,66 @@
+.main {
+    margin: 20px auto;
+    position: relative;
+    width: 720px;
+    padding: 10px;
+    box-shadow: 0px 15px 25px #333333;
+    border-radius: 5px;
+    background-color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+.main>div {
+    display: inline-block;
+    width: 225px;
+    background-color:white;
+    padding: 5px;
+    position: relative;
+    text-align: center;
+}
+
+.server>.img {
+    background: url("source.png") no-repeat;
+    background-position: 0 -84px;
+    min-width: 65px;
+    height: 43px;
+    background-position-x: center;
+}
+
+.cloud {
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+
+.cloud>.img {
+    background: url("source.png") no-repeat;
+    background-position: 0px -42px;
+    min-width: 65px;
+    height: 43px;
+    background-position-x: center;
+}
+
+.virtual>.img {
+    background: url("source.png") no-repeat;
+    background-position: 0px 1px;
+    min-width: 65px;
+    height: 43px;
+    background-position-x: center;
+}
+
+button {
+    background-color:#f56332;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 5px 10px 5px 10px;
+}
+
+body {
+    background-color: #4e6379;
+}
+
+h2 {
+    font-size: 16px;
+    color: #f56332;
+}

@@ -1,0 +1,59 @@
+.but {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: inline-block;
+    background:linear-gradient(#dbdbdb,#bfbfbf,#dbdbdb);
+    width: 80px;
+    height: 26px;
+    position: relative;
+    z-index: 20;
+    color: black;
+    text-align: center;
+    line-height: 25px;
+    margin-left: 10px;
+}
+
+.but:after, .but:before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    right: -5px;  
+    z-index: -1;
+}
+.but:after {
+    top: 0;
+    height: 13px;
+    background: linear-gradient(0deg, #bfbfbf, #dbdbdb);
+    transform: skew(25deg);
+}
+.but:before {
+    bottom: 0; 
+    height: 13px;
+    background: linear-gradient(180deg, #bfbfbf, #dbdbdb);
+    transform: skew(-25deg);
+}
+
+.but:first-child::after,.but:first-child::before {
+    left: 3px;
+}
+.but:last-child::after,.but:last-child::before {
+    right: 3px;
+}
+
+.but:hover::after {
+    background: linear-gradient(180deg, #a8df80, #67c622);
+}
+.but:hover::before {
+    background: linear-gradient(0deg, #a8df80, #67c622);
+}
+
+.but:hover {
+    color: white;
+    background:linear-gradient(#a8df80, #67c622,#a8df80);
+}
+
+.buts {
+    width: 500px;
+    margin: 100px auto;
+}
+   
+

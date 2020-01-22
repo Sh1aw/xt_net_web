@@ -1,0 +1,37 @@
+body {
+    background-color: black;
+}
+
+.main {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0 auto;
+    width: 450px;
+    background: linear-gradient(to bottom, white, lightgray);
+    border-radius: 0 0 8px 8px;
+}
+
+.header {
+    display: block;
+    position: relative;
+    height: 25px;
+    line-height: 25px;
+    text-align: left;
+    background: linear-gradient(120deg, rgba(0,0,0,1) 29%,
+                 rgba(0,0,0,0) 29%);
+    padding: 10px;
+    color: orange;
+    font-size: 31px;
+    font-weight: bold;
+    border-right: 2px white solid;
+}
+
+.container {
+    padding: 10px;
+    position: relative;
+    border-radius: 0 0 10px 10px;
+    border-left: 2px white solid;
+    border-bottom: 2px white  solid;
+    border-right: 2px white  solid;
+}
+
+

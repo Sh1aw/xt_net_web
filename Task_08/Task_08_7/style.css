@@ -1,0 +1,16 @@
+.gen{
+    padding: 10px;
+    background-color: #008b66;
+    text-align: left;
+    color: white;
+    margin-left: 0px;
+    font-size: 20px;
+}
+.second{
+    border: 1px white solid;
+    border-right: none;
+    padding: 10px;
+    margin-left: 40px;
+    margin-top: -6px;
+    background-color: #dfe6e1;
+}
