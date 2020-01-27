@@ -1,0 +1,274 @@
+body {
+    font-family:Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #edeef0;
+}
+
+header {
+    width: 100%;
+    position: fixed;
+    background-color: #4776a4;
+    top: 0px;
+    left: 0px;
+    font-size: 12.5px;
+    z-index: 1;
+}
+.centerHeader {
+    width: 960px;
+    position: relative;
+    height: 42px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.logo {
+    background: url("img/icons/logo.svg") no-repeat
+     50% / contain;
+    width: 34px;
+    height: 42px;
+    cursor: pointer;
+}
+.logoContainer {
+    width: 165px;
+    display: block;
+    float: left;
+}
+
+.search_bar {
+    box-sizing: border-box;
+    padding: 6px 6px 6px 19px;
+    margin: 7px 0;
+    height: 28px;
+    line-height: 16px;
+    width: 230px;
+    border-radius: 14px;
+    border: none;
+    background-color: #204b77;
+    color: #7d9eba;
+}
+.search_bar:focus {
+    background-color: white;
+    color: gray;
+}
+
+.noty {
+    margin-left: 20px;
+}
+.noty:hover {
+    background-color: #3a6894;
+    box-sizing: content-box;
+}
+.notify_bar {
+    width: 42px;
+    display: block;
+    position: relative;
+    cursor: pointer;
+}
+.notify_icon {
+    background:url("img/icons/bell.svg") 50% / contain no-repeat;
+    margin: 11px auto;
+    height: 20px;
+    width: 20px;
+}
+
+.user_bar:hover {
+    background-color:#3a6894;
+}
+.user_bar {
+    padding-right: 5px;
+}
+.nav_link {
+    line-height: 42px;
+    height: 42px;
+    padding: 0 10px;
+    color: #fff;
+    font-weight: 700;
+    display: inline-block;
+}
+.ava {
+    margin-top: 7px;
+    display: inline-block;
+    height: 28px;
+    width: 28px;
+    border-radius: 14px;
+    vertical-align: top;
+}
+
+.gen_container{
+    width: 960px;
+    margin: 55px auto;
+    padding: 0 15px;
+}
+
+.middle {
+    float: left;
+    width: 550px;
+    margin-left: 5px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 13px;
+    background-color: #f0f2f5;
+}
+
+.settings_item {
+    padding: 20px;
+    background-color: white;
+}
+
+.settings_item_header{
+    border-bottom: 1px solid gainsboro;
+}
+.settings_item_header>h3 {
+    padding-left: 20px;
+    font-size: 16px; 
+    font-weight: lighter;
+}
+
+.settings_item_footer {
+    text-align: center; 
+    padding-top: 10px; 
+}
+
+.setLabel {
+    float: left;
+    line-height: 16px;
+    padding: 6px 10px 6px 0;
+    width: 150px;
+    color: #656565;
+}
+
+.setText {
+    float: left; 
+    padding: 6px 0 0;
+}
+
+.setLink {
+    float: right;
+    padding: 6px 0 0;
+}
+
+.setBlock {
+    height: 40px;
+    border-bottom: 1px solid 	gainsboro;
+    padding-top:20px;
+    padding-bottom: 5px;
+}
+
+.setBlock:first-child {
+    padding-top: 0px;
+}
+
+.setLink>a {
+    cursor: pointer;
+    color: #4776a4 ;
+}
+
+.setLink>a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.float_l {
+    float: left;
+}
+.float_r {
+    float: right;
+}
+
+.left_bar {
+    width: 155px;
+    height: 500px;
+    float: left;
+}
+
+.right_bar {
+    float: right;
+    width: 235px;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px lightgray solid;
+}
+
+.menuIco {
+    width: 35px;
+    height: 25px;
+    opacity: 0.75;
+    background: url(img/icons/sb_icons.svg) no-repeat 7px -441px;  
+    display: block;
+}
+
+.menuText {
+    margin-left: 2px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12.5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.menuOl {
+    padding-inline-start: 0px;
+    margin-block-start: 0em;
+}
+
+.left_bar>.menuOl {
+    margin-left: -8px;
+}
+
+li {
+    color: #4776a4;
+    list-style: none;
+    margin-right: 7px;
+}
+
+li:hover {
+    background-color:#e1e5ea;
+}
+
+.right_bar>ol {
+    padding-top:5px;
+    padding-bottom:5px ;
+    margin-block-end: 0em;
+}
+
+.right_bar>ol>li {
+    font-size: 13px;
+    padding: 5px 5px 10px 15px;
+    margin-right: 0px;
+}
+
+.right_bar>ol>li:first-child {
+    border-left: 2px #4776a4 solid;
+    background-color: #f0f2f5;
+    font-weight: 600;
+    color: black;
+}
+
+.icoHome {
+    background-position: 7px 6px;
+}
+.icoNews {
+    background-position: 7px -917px;
+}
+.icoMess {
+    background-position: 7px -21px;
+}
+.icoFriends {
+    background-position: 7px -77px;
+}
+.icoCom {
+    background-position: 7px -105px;
+}
+.icoPhoto {
+    background-position: 7px -133px;
+}
+.icoMusic {
+    background-position: 7px -161px;
+}
+.icoVideo {
+    background-position: 7px -189px;
+}
+.icoGames {
+    background-position: 7px -217px;
+}
