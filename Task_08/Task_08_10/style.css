@@ -53,6 +53,7 @@ header {
 .noty {
     margin-left: 20px;
 }
+
 .noty:hover {
     background-color: #3a6894;
     box-sizing: content-box;
@@ -69,6 +70,12 @@ header {
     height: 20px;
     width: 20px;
 }
+.mus_icon {
+    background:url("img/icons/mus.svg") 50% / contain no-repeat;
+    margin: 11px auto;
+    height: 20px;
+    width: 20px;
+}
 
 .user_bar:hover {
     background-color:#3a6894;
@@ -79,7 +86,7 @@ header {
 .nav_link {
     line-height: 42px;
     height: 42px;
-    padding: 0 10px;
+    padding: 0 5px 0 10px;
     color: #fff;
     font-weight: 700;
     display: inline-block;
