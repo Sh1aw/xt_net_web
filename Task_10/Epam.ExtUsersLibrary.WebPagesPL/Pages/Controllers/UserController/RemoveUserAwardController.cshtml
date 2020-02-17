@@ -1,0 +1,21 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Interfaces
+@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.Entities;
+@{
+    if (IsAjax)
+    {
+        var userLogic = DependencyResolver.UserLogic;
+        var awardLogic = DependencyResolver.AwardLogic;
+        var allAwards = awardLogic.GetAll();
+        if (IsPost)
+        {
+            var uid = int.Parse(Request.Form["uid"]);
+            var aid = int.Parse(Request.Form["aid"]);
+            userLogic.RemoveUserAward(uid,aid);
+            awardLogic.RemoveAwardUser(aid,uid);
+            Response.StatusCode = 200;
+        }
+}
+}
+
+

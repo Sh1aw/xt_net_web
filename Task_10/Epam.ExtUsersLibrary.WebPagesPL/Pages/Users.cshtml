@@ -1,0 +1,105 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Interfaces
+@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.Entities;
+@{
+    Layout = "~/Pages/Layouts/_LayoutPage1.cshtml";
+    var userLogic = DependencyResolver.UserLogic;
+    var awardLogic = DependencyResolver.AwardLogic;
+    var allAwards = awardLogic.GetAll();
+    var allUsers = userLogic.GetAll().OrderBy(u=>u.Id);
+    Dictionary<User,IEnumerable<Award>> diction = new Dictionary<User, IEnumerable<Award>>();
+    foreach (var user in allUsers)
+    {
+        diction.Add(user,allAwards.Where(t => user.AwardsIds.Contains(t.Id)));
+    }
+    Page.Tittle = "Users";
+}
+<div class="main">
+    <h1>Users List</h1>
+    <table class="table table-sm" style="padding: 10px; border: 1px solid darkblue; text-align: center">
+        <thead class="thead-dark">
+            <tr class="d-flex">
+                <th class="col-1">ID</th>
+                <th class="col-2">Pic</th>
+                <th class="col-1">Name</th>
+                <th class="col-1">Age</th>
+                <th class="col-2">Date of Birth</th>
+                <th class="col-1">Edit</th>
+                <th class="col-1">Delete</th>
+                <th class="col-3">Awards</th>
+            </tr>
+        </thead>
+        @foreach (KeyValuePair<User, IEnumerable<Award>> keyValue in diction)
+        {
+    <tr id="u-@keyValue.Key.Id" class="d-flex">
+        <td class="col-1">@keyValue.Key.Id</td>
+        <td class="col-2" rel="userPic"><img src="@keyValue.Key.UserPicPath" width="50" height="50"/></td>
+        <td class="col-1" rel="name">@keyValue.Key.Name</td>
+        <td class="col-1" rel="age">@keyValue.Key.Age</td>
+        <td class="col-2" rel="dob">@keyValue.Key.DateOfBirth.ToShortDateString()</td>
+        <td class="col-1"><img class="editUserBtn" src="~/Content/icons/pencil.svg" /></td>
+        <td class="col-1"><img class="delUserBtn" src="~/Content/icons/x-circle.svg" /></td>
+        <th class="col-3" rel="awards">
+            <ol>
+                @{
+                    if (keyValue.Value.Any())
+                    {
+                        foreach (var award in keyValue.Value)
+                        {
+                            <li id="aw-@award.Id" style="clear: both">
+                                <span>@award.Name</span>
+                                <span style="float: right">
+                                    <img class="userAwardRemoving" src="~/Content/icons/x-circle.svg" />
+                                </span>
+                            </li>
+                        }
+                    }
+                }
+            </ol>
+        </th>
+    </tr>
+        }
+    </table>
+
+    <div class="panel_container">
+        <div class="cntrl_panel panel_template">
+            <form>
+                <div class="form-group">
+                    <label>User Name:</label>
+                    <input class="form-control form-control-sm" id="userName" type="text" name="title" />
+                </div>
+                <div class="form-group mb-2">
+                    <label>Date of Birth:</label>
+                    <input class="form-control form-control-sm" id="userDob" type="date" name="title" />
+                </div>
+                <div class="form-group mb-2">
+                    <label>Picture:</label>
+                    <input class="form-control form-control-sm" id="userPic" type="file" name="title" />
+                </div>
+                <input class="btn btn-info align-items-center" id="addUserBtn" type="submit" name="buttonSubmit" value="Add User" />
+            </form>
+        </div>
+        <div class="edit_panel panel_template" style="display: none">
+            <input type="text" placeholder="Name" id="edit_name" value="">
+            <input type="date" id="edit_dob" />
+            <div class="form-group mb-2">
+                <label>Picture:</label>
+                <input class="form-control form-control-sm" id="userPicEdit" type="file" name="title" />
+            </div>
+            <button id="updateUser"> Update User Info</button>
+            <label>Дабавить награду</label>
+            <select>
+                @foreach (var award in allAwards)
+                {
+                    <option value="@award.Id">@award.Name</option>
+                }
+            </select>
+            <button id="giveUserSomeAward">Add Award</button>
+        </div>
+    </div>
+</div>
+
+<script src="/Scripts/jquery-3.4.1.min.js"></script>
+<script src="/Scripts/CommonScipts.js"></script>
+<script src="~/Scripts/UserScripts.js"></script>
+

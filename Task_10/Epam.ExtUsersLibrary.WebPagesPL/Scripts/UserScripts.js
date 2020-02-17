@@ -1,0 +1,156 @@
+﻿$("#addUserBtn").click(function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var userName = $.trim($("#userName").val());
+    var userDob = $.trim($("#userDob").val());
+    var userPic = $("#userPic").prop('files')[0];
+    var form_data = new FormData();
+    form_data.append('uPic', userPic);
+    form_data.append('name', userName);
+    form_data.append('dob', userDob);
+    if (validateInput(userName, "main", "UserName cant be empty", "uname")
+        && validateInput(userDob, "main", "Date cant be empty", "udob")) {
+        $.ajax({
+            type: "POST",
+            url: "/Pages/Controllers/UserController/AddUserController",
+            data: form_data,
+            processData: false,
+            contentType: false,
+            statusCode: {
+                5: function () {
+                    alert("Wrong img format");
+                },
+            },
+            success: function (data) {
+                var data1 = JSON.parse(data);
+                var answer = `<tr id=u-${data1.Id} class="d-flex">
+                        <td class="col-1">${data1.Id}</td>
+                        <td class="col-2" rel="userPic"><img src="${data1.UserPicPath}" width="50" height="50"/></td>
+                        <td class="col-1"rel = "name">${data1.Name}</td>
+                        <td class="col-1 rel="age">${data1.Age}</td>
+                        <td class="col-2 rel="dob">${new Date(CleanDate(data1.DateOfBirth)).toLocaleDateString()}</td>
+                        <td class="col-1"><img class="editUserBtn" src="/Content/icons/pencil.svg"/></td>
+                        <td class="col-1"><img class="delUserBtn" src="/Content/icons/x-circle.svg"/></td>
+                        <td class="col-3" rel="awards"></td>
+                        </tr>`;
+                $("table").append(answer);
+            }
+        });
+    }
+
+});
+
+$("table").click(function (e) {
+    let target = e.target;
+    if (target.className != 'delUserBtn') {
+        return;
+    }
+    let surety = confirm("This user will be deleted. Proceed?");
+    if (!surety) {
+        return;
+    }
+    let userId = target.parentElement.parentElement.id.split('-')[1];
+    $.ajax({
+        type: "POST",
+        url: "/Pages/Controllers/UserController/DeleteUserController",
+        data: { id: userId },
+        success: function () {
+            $("#u-" + userId).remove();
+        }
+    });
+});
+
+$("table").click(function (e) {
+    let target = e.target;
+    if (target.className != 'editUserBtn') {
+        return;
+    }
+    $(".edit_panel").css('display', 'block');
+    let oldName = target.parentElement.parentElement.querySelector("[rel = 'name']").textContent;
+    let oldDob = target.parentElement.parentElement.querySelector("[rel = 'dob']").textContent;
+    $("#edit_name").val(oldName);
+    $("#edit_dob").val(FormatDate(oldDob));
+    let uid = target.parentElement.parentElement.id.split('-')[1];
+    $("#giveUserSomeAward").attr("uid", uid);
+    $("#updateUser").attr("uid", uid);
+});
+
+$("#giveUserSomeAward").click(function (e) {
+    let userId = e.target.getAttribute("uid");
+    let awardId = $(".edit_panel select").val();
+    $.ajax({
+        type: "POST",
+        url: "/Pages/Controllers/UserController/GiveUserAwardController",
+        data: { uId: userId, aId: awardId },
+        statusCode: {
+            8: function () {
+                alert("Already rewarded");
+            },
+        },
+        success: function (data) {
+            var data1 = JSON.parse(data);
+            let newAnswer = `<li id=aw-${data1.Id} style="clear: both">
+                                        <span>${data1.Name}</span>
+                                        <span style="float: right">
+                                            <img class="userAwardRemoving" src="/Content/icons/x-circle.svg" width="20" height="20"/>
+                                        </span>
+                                    </li>`;
+            $("#u-" + userId)[0].querySelector('[rel = "awards"] ol').insertAdjacentHTML('beforeend', newAnswer);
+        }
+    })
+});
+
+$("#updateUser").click(function (e) {
+    let userId = e.target.getAttribute("uid");
+    var userPic = $("#userPicEdit").prop('files')[0];
+    let newName = $.trim($("#edit_name").val());
+    let newDob = $("#edit_dob").val();
+    if (validateInput(newName, "main", "User name can`t be empty")
+        && validateInput(userDob, "main", "Date cant be empty", "udob")) {
+        let form_data = new FormData();
+        form_data.append('uPic', userPic);
+        form_data.append('uid', userId);
+        form_data.append('name', newName);
+        form_data.append('dob', newDob);
+        $.ajax({
+            type: "POST",
+            url: "/Pages/Controllers/UserController/UpdateUserController",
+            data: form_data,
+            processData: false,
+            contentType: false,
+            statusCode: {
+                5: function () {
+                    alert("Wrong img format");
+                },
+            },
+            success: function (data) {
+                var data1 = JSON.parse(data);
+                $("#u-" + userId)[0].querySelector("[rel = 'name']").textContent = data1.Name;
+                $("#u-" + userId)[0].querySelector("[rel = 'userPic'] img").setAttribute("src", data1.UserPicPath);
+                $("#u-" + userId)[0].querySelector("[rel = 'age']").textContent = data1.Age;
+                $("#u-" + userId)[0].querySelector("[rel = 'dob']").textContent = new Date(CleanDate(data1.DateOfBirth)).toLocaleDateString();
+            }
+        });
+    }
+});
+
+$("table").click(function (e) {
+    let target = e.target;
+    if (target.className != 'userAwardRemoving') {
+        return;
+    }
+    let surety = confirm("This user will lose this reward. Proceed?");
+    if (!surety) {
+        return;
+    }
+    let awardId = target.closest('li').id.split('-')[1];
+    let userId = target.closest('tr').id.split('-')[1];
+    $.ajax({
+        type: "POST",
+        url: "/Pages/Controllers/UserController/RemoveUserAwardController",
+        data: { uId: userId, aId: awardId },
+        success: function () {
+            target.closest('li').remove();
+        }
+    });
+});

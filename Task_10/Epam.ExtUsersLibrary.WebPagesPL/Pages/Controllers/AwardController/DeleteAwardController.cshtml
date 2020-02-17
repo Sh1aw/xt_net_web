@@ -1,0 +1,26 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Interfaces
+@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.Entities;
+@{
+    if (IsAjax)
+    {
+        var awardLogic = DependencyResolver.AwardLogic;
+        var userLogic = DependencyResolver.UserLogic;
+        if (IsPost)
+        {
+            var aid = Int16.Parse(Request.Form["aid"]);
+            var current = awardLogic.GetById(aid);
+            if (current.UserIds.Count>0)
+            {
+                Response.StatusCode = 6;
+                Response.Write(Json.Encode(current.UserIds));
+            }
+            else
+            {
+                awardLogic.Remove(aid);
+            }
+        }
+    }
+}
+
+
