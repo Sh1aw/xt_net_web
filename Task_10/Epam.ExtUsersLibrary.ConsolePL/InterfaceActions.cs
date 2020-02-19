@@ -13,6 +13,7 @@ namespace Epam.ExtUsersLibrary.ConsolePL
     {
         private static readonly IUserLogic userLogic = DependencyResolver.UserLogic;
         private static readonly IAwardLogic awardLogic = DependencyResolver.AwardLogic;
+        private static readonly IUserAwardLogic userAwardLogic = DependencyResolver.UserAwardLogic;
         private static void GetFullAwardInfo(IEnumerable<Award> AllAwards, IEnumerable<User> AllUsers)
         {
             Console.WriteLine("\n\tList of Users:");
@@ -98,7 +99,7 @@ namespace Epam.ExtUsersLibrary.ConsolePL
             Console.WriteLine("Enter award id, which you want to give" +
                               " to user with id : " + userId);
             int awardId = Tools.ParseUserIntInput();
-            userLogic.GiveUserAward(userId,awardId);
+            userAwardLogic.GiveUserAward(userId,awardId);
             Console.WriteLine("User has been awarded!");
         }
         private static void GetAwardInput()
