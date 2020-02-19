@@ -1,12 +1,8 @@
 ﻿using Epam.ExtUsersLibrary.BLL.Interfaces;
-using Epam.ExtUsersLibrary.DAL;
 using Epam.ExtUsersLibrary.Dao.Interfaces;
 using Epam.ExtUsersLibrary.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Epam.ExtUsersLibrary.BLL
 {
@@ -21,7 +17,12 @@ namespace Epam.ExtUsersLibrary.BLL
 
         public User Add(User user)
         {
-            return _userDao.Add(user);
+            if (!String.IsNullOrEmpty(user.Name) && user.DateOfBirth<DateTime.Today)
+            {
+                return _userDao.Add(user);
+            }
+
+            return null;
         }
 
         public User GetById(int id)
@@ -41,15 +42,20 @@ namespace Epam.ExtUsersLibrary.BLL
 
         public User Update(int userId, string name, DateTime dob,string upic)
         {
-            return _userDao.Update(userId, name, dob, upic);
-        }
-        public void GiveUserAward(int userId, int awardId)
-        {
-            _userDao.GiveUserAward(userId,awardId);
-        }
-        public void RemoveUserAward(int userId, int awardId)
-        {
-            _userDao.RemoveUserAward(userId,awardId);
+            var current = _userDao.GetById(userId);
+            if (current!=null)
+            {
+                if (!String.IsNullOrEmpty(name) && dob<DateTime.Today)
+                {
+                    if (string.IsNullOrEmpty(upic) && !string.IsNullOrEmpty(current.UserPicPath))
+                    {
+                        upic = current.UserPicPath;
+                    }
+                    return _userDao.Update(userId, name, dob, upic);
+                }
+                return null;
+            }
+            return null;
         }
 
     }

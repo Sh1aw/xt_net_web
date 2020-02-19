@@ -1,0 +1,46 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@{
+    Layout = "~/Pages/Layouts/_LayoutPage1.cshtml";
+    var visitorLogic = DependencyResolver.VisitorLogic;
+    var allVisitors = visitorLogic.GetAll();
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/Pages/Users");
+    }
+}
+<div class="main">
+    <h1>Visitors</h1>
+    <hr/>
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 20%">Name</th>
+            <th style="width: 30%">Roles</th>
+            <th style="width: 10%">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var visitor in allVisitors)
+        {
+            <tr id="v-@visitor.Id">
+                <td class="align-middle">@visitor.Id</td>
+                <td class="align-middle">@visitor.Login</td>
+                <td rel="role" class="align-middle">
+                    @foreach (var role in visitor.Roles)
+                    {
+                        <span>@role</span><br/>
+                    }
+                </td>
+                <td class="align-middle">
+                    <p class ="changeRole">
+                        Give/Deprive Admin Rights
+                    </p>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<script src="/Scripts/jquery-3.4.1.min.js"></script>
+<script src="/Scripts/VisitorScripts.js"></script>

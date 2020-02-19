@@ -31,14 +31,18 @@ namespace Epam.ExtUsersLibrary.BLL
             return _visitorDao.GetById(id);
         }
 
-        public void MakeAdmin(int id)
+        public Visitor GetByLogin(string login)
         {
-            _visitorDao.MakeAdmin(id);
+            return _visitorDao.GetByLogin(login);
+        }
+        public void GiveRole(int id,string role)
+        {
+            _visitorDao.GiveRole(id,role);
         }
 
-        public void MakeCommon(int id)
+        public void DepriveRole(int id,string role)
         {
-            _visitorDao.MakeCommon(id);
+            _visitorDao.DepriveRole(id,role);
         }
 
         public int Remove(int id)

@@ -1,26 +1,21 @@
-﻿@using Epam.ExtUsersLibrary.BLL.Interfaces
-@using Epam.ExtUsersLibrary.BLL.Ioc;
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
 @using Epam.ExtUsersLibrary.Entities;
 @using Epam.ExtUsersLibrary.WebPagesPL.Common
 @{
     if (IsAjax)
     {
-        var userLogic = DependencyResolver.UserLogic;
         var awardLogic = DependencyResolver.AwardLogic;
-        var allAwards = awardLogic.GetAll();
         if (IsPost)
         {
-            var name = Request.Form["name"];
-            var dob = Request.Form["dob"];
-            var uid = Int32.Parse(Request.Form["uid"]);
-            var file = Request.Files["uPic"];
-            string picpath = userLogic.GetById(uid).UserPicPath;
+            var title = Request.Form["name"];
+            var file = Request.Files["aPic"];
+            string picpath = null;
             if (file != null && file.ContentLength > 0)
             {
                 if (PictureValidator.Validate(file.ContentType, file.ContentLength))
                 {
                     string fname = Path.GetFileName(file.FileName);
-                    string uPicPath = Path.Combine("/Content/UserPic", fname);
+                    string uPicPath = Path.Combine("/Content/AwardPic", fname);
                     file.SaveAs(Server.MapPath(uPicPath));
                     picpath = uPicPath;
                 }
@@ -29,10 +24,17 @@
                     Response.StatusCode = 5;
                 }
             }
-            var current = userLogic.Update(uid,name,DateTime.Parse(dob),picpath);
-            Response.Write(Json.Encode(current));
+            var current = awardLogic.Add(new Award(title, picpath));
+            if (current!=null)
+            {
+                Response.Write(Json.Encode(current));
+            }
+            else
+            {
+                Response.StatusCode = 404;
+            }
         }
-}
+    }
 }
 
 

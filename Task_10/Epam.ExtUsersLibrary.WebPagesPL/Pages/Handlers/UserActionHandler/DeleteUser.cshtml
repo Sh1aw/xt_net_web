@@ -1,0 +1,38 @@
+﻿@using System.Activities.Expressions
+@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    if (IsAjax)
+    {
+        var userLogic = DependencyResolver.UserLogic;
+        var userAwardLogic = DependencyResolver.UserAwardLogic;
+        if (IsPost)
+        {
+            var stringUid = Request.Form["id"];
+            if (InputsValidator.ValidateId(stringUid))
+            {
+                var id = Int32.Parse(stringUid);
+                var current = userLogic.GetById(id);
+                if (current != null)
+                {
+                    if (current.AwardsIds.Count > 0)
+                    {
+                        var temp = current.AwardsIds.GetRange(0, current.AwardsIds.Count);
+                        foreach (var aid in temp)
+                        {
+                            userAwardLogic.RemoveUserAward(current.Id, aid);
+                        }
+                    }
+                    userLogic.Remove(id);
+                    Response.StatusCode = 200;
+                }
+                else
+                {
+                    Response.StatusCode = 404;
+                }
+            }
+        }
+    }
+}
+
+

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AwardDao.cs" />
     <Compile Include="JsonSynchronizer.cs" />
+    <Compile Include="UserAwardDao.cs" />
     <Compile Include="UserDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VisitorDao.cs" />

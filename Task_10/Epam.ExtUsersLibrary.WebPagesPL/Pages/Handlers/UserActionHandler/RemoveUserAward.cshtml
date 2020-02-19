@@ -1,0 +1,24 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    if (IsAjax)
+    {
+        var userAwardLogic = DependencyResolver.UserAwardLogic;
+        if (IsPost)
+        {
+            var stringUid = Request.Form["uid"];
+            var stringAid = Request.Form["aid"];
+            if (InputsValidator.ValidateId(stringUid) && InputsValidator.ValidateId(stringAid))
+            {
+                var uid = int.Parse(stringUid);
+                var aid = int.Parse(stringAid);
+                if (userAwardLogic.RemoveUserAward(uid, aid))
+                {
+                    Response.StatusCode = 200;
+                }
+            }
+        }
+    }
+}
+
+

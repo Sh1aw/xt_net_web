@@ -15,7 +15,8 @@ namespace Epam.ExtUsersLibrary.Dao.Interfaces
 
         int Remove(int id);
         IEnumerable<Visitor> GetAll();
-        void MakeAdmin(int id);
-        void MakeCommon(int id);
+        Visitor GetByLogin(string login);
+        void GiveRole(int id,string role);
+        void DepriveRole(int id,string role);
     }
 }

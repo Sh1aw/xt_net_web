@@ -105,7 +105,8 @@ namespace Epam.ExtUsersLibrary.ConsolePL
         {
             Console.WriteLine("Enter the name of award:");
             String name = Tools.GetValidName();
-            awardLogic.Add(new Award(name));
+            String picPath = Tools.GetValidName();
+            awardLogic.Add(new Award(name,picPath));
             Console.WriteLine("Award has been added.");
         }
         private static void GetAllAwards(IEnumerable<Award> Awards)

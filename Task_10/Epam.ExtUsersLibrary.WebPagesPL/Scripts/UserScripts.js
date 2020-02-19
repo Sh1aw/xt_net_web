@@ -12,7 +12,7 @@
         && validateInput(userDob, "main", "Date cant be empty", "udob")) {
         $.ajax({
             type: "POST",
-            url: "/Pages/Controllers/UserController/AddUserController",
+            url: "/Pages/Handlers/UserActionHandler/AddUser",
             data: form_data,
             processData: false,
             contentType: false,
@@ -23,15 +23,15 @@
             },
             success: function (data) {
                 var data1 = JSON.parse(data);
-                var answer = `<tr id=u-${data1.Id} class="d-flex">
-                        <td class="col-1">${data1.Id}</td>
-                        <td class="col-2" rel="userPic"><img src="${data1.UserPicPath}" width="50" height="50"/></td>
-                        <td class="col-1"rel = "name">${data1.Name}</td>
-                        <td class="col-1 rel="age">${data1.Age}</td>
-                        <td class="col-2 rel="dob">${new Date(CleanDate(data1.DateOfBirth)).toLocaleDateString()}</td>
-                        <td class="col-1"><img class="editUserBtn" src="/Content/icons/pencil.svg"/></td>
-                        <td class="col-1"><img class="delUserBtn" src="/Content/icons/x-circle.svg"/></td>
-                        <td class="col-3" rel="awards"></td>
+                var answer = `<tr id="u-${data1.Id}">
+                        <td class="align-middle">${data1.Id}</td>
+                        <td class="align-middle" rel="userPic"><img src="${data1.UserPicPath}" width="50" height="50"/></td>
+                        <td class="align-middle" rel="name">${data1.Name}</td>
+                        <td class="align-middle" rel="age">${data1.Age}</td>
+                        <td class="align-middle" rel="dob">${new Date(CleanDate(data1.DateOfBirth)).toLocaleDateString()}</td>
+                        <td class="align-middle"><img class="editUserBtn" src="/Content/icons/pencil.svg"/></td>
+                        <td class="align-middle"><img class="delUserBtn" src="/Content/icons/x-circle.svg"/></td>
+                        <td class="align-middle" rel="awards"><ol></ol></td>
                         </tr>`;
                 $("table").append(answer);
             }
@@ -52,8 +52,13 @@ $("table").click(function (e) {
     let userId = target.parentElement.parentElement.id.split('-')[1];
     $.ajax({
         type: "POST",
-        url: "/Pages/Controllers/UserController/DeleteUserController",
+        url: "/Pages/Handlers/UserActionHandler/DeleteUser",
         data: { id: userId },
+        statusCode: {
+            404: function () {
+                alert("User does not exist");
+            },
+        },
         success: function () {
             $("#u-" + userId).remove();
         }
@@ -66,21 +71,24 @@ $("table").click(function (e) {
         return;
     }
     $(".edit_panel").css('display', 'block');
-    let oldName = target.parentElement.parentElement.querySelector("[rel = 'name']").textContent;
-    let oldDob = target.parentElement.parentElement.querySelector("[rel = 'dob']").textContent;
+    let oldName = target.closest("tr").querySelector("[rel = 'name']").textContent;
+    let oldDob = target.closest("tr").querySelector("[rel = 'dob']").textContent;
     $("#edit_name").val(oldName);
     $("#edit_dob").val(FormatDate(oldDob));
-    let uid = target.parentElement.parentElement.id.split('-')[1];
+    let uid = target.closest("tr").id.split('-')[1];
     $("#giveUserSomeAward").attr("uid", uid);
     $("#updateUser").attr("uid", uid);
+    $(".cntrl_panel").css("display", "none");
 });
 
 $("#giveUserSomeAward").click(function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
     let userId = e.target.getAttribute("uid");
     let awardId = $(".edit_panel select").val();
     $.ajax({
         type: "POST",
-        url: "/Pages/Controllers/UserController/GiveUserAwardController",
+        url: "/Pages/Handlers/UserActionHandler/GiveUserAward",
         data: { uId: userId, aId: awardId },
         statusCode: {
             8: function () {
@@ -89,6 +97,7 @@ $("#giveUserSomeAward").click(function (e) {
         },
         success: function (data) {
             var data1 = JSON.parse(data);
+            console.log(data1);
             let newAnswer = `<li id=aw-${data1.Id} style="clear: both">
                                         <span>${data1.Name}</span>
                                         <span style="float: right">
@@ -101,12 +110,14 @@ $("#giveUserSomeAward").click(function (e) {
 });
 
 $("#updateUser").click(function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
     let userId = e.target.getAttribute("uid");
     var userPic = $("#userPicEdit").prop('files')[0];
     let newName = $.trim($("#edit_name").val());
     let newDob = $("#edit_dob").val();
     if (validateInput(newName, "main", "User name can`t be empty")
-        && validateInput(userDob, "main", "Date cant be empty", "udob")) {
+        && validateInput(newDob, "main", "Date cant be empty", "udob")) {
         let form_data = new FormData();
         form_data.append('uPic', userPic);
         form_data.append('uid', userId);
@@ -114,7 +125,7 @@ $("#updateUser").click(function (e) {
         form_data.append('dob', newDob);
         $.ajax({
             type: "POST",
-            url: "/Pages/Controllers/UserController/UpdateUserController",
+            url: "/Pages/Handlers/UserActionHandler/UpdateUser",
             data: form_data,
             processData: false,
             contentType: false,
@@ -132,6 +143,9 @@ $("#updateUser").click(function (e) {
             }
         });
     }
+    $(".edit_panel form")[0].reset();
+    e.target.removeAttribute("aid");
+    $(".edit_panel").css("display", "none");
 });
 
 $("table").click(function (e) {
@@ -147,7 +161,7 @@ $("table").click(function (e) {
     let userId = target.closest('tr').id.split('-')[1];
     $.ajax({
         type: "POST",
-        url: "/Pages/Controllers/UserController/RemoveUserAwardController",
+        url: "/Pages/Handlers/UserActionHandler/RemoveUserAward",
         data: { uId: userId, aId: awardId },
         success: function () {
             target.closest('li').remove();

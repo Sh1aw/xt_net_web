@@ -11,13 +11,14 @@ namespace Epam.ExtUsersLibrary.Entities
         public int Id { get; set; }
         public string Login { get; set; }
         public  string Password { get; set; }
-        public bool IsAdmin { get; set; }
+        
+        public List<string> Roles { get;}
 
-        public Visitor(string login, string password, bool isAdmin)
+        public Visitor(string login, string password)
         {
             Login = login;
             Password = password;
-            IsAdmin = isAdmin;
+            Roles = new List<string>();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -8,6 +7,50 @@
     <link href="/styles.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
+<header class="bg-info">
+    <div style="display: flex">
+        <div class="main_menu">
+            <ul>
+                <li>
+                    <a href="~/Pages/Users.cshtml">Users</a>
+                </li>
+                @if (User.IsInRole("admin"))
+                {
+                    <li>
+                        <a href="~/Pages/Awards.cshtml">Awards</a>
+                    </li>
+                    <li>
+                        <a href="~/Pages/AdminPanel.cshtml">Admin Panel</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="login_block">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="userR">
+                    <ul>
+                        <li>
+                            <span>Hello, @User.Identity.Name</span>
+                        </li>
+                        <li>
+                            <a href="~/Pages/Handlers/VisitorActionHandler/LogOut">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="guestR">
+                    <ul>
+                        <li><a href="~/Pages/LogInPage.cshtml">Log In</a></li>
+                        <li><a href="~/Pages/RegistrationPage.cshtml">Registration</a></li>
+                    </ul>
+                </div>
+            }
+        </div>
+    </div>
+</header>
 <div style="margin: 100px auto; max-width: 1000px;">
     @RenderBody()
 </div>

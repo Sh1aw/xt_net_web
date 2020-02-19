@@ -39,23 +39,31 @@ namespace Epam.ExtUsersLibrary.DAL
             return visitor;
         }
 
-
-        public void MakeAdmin(int id)
+        public Visitor GetByLogin(string login)
         {
-            var current = GetById(id);
-            if (current!= null)
-            {
-                current.IsAdmin = true;
-            }
+            return _visitors.Where(v => v.Value.Login.Equals(login)).FirstOrDefault().Value;
         }
 
-        public void MakeCommon(int id)
+        public void GiveRole(int id, string role)
         {
             var current = GetById(id);
-            if (current != null)
+            if (current!= null && !current.Roles.Contains(role))
             {
-                current.IsAdmin = false;
+                current.Roles.Add(role);
+                JsonSynchronizer.SynchronizeJSON(_path, _visitors);
             }
+            
+        }
+
+        public void DepriveRole(int id, string role)
+        {
+            var current = GetById(id);
+            if (current != null && current.Roles.Contains(role))
+            {
+                current.Roles.Remove(role);
+                JsonSynchronizer.SynchronizeJSON(_path, _visitors);
+            }
+            
         }
 
         public int Remove(int id)

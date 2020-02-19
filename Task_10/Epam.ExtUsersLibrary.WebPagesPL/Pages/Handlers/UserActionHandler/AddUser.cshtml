@@ -1,0 +1,44 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.Entities;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    if (IsAjax)
+    {
+        var userLogic = DependencyResolver.UserLogic;
+        if (IsPost)
+        {
+            var title = Request.Form["name"];
+            var dob = Request.Form["dob"];
+            var file = Request.Files["uPic"];
+            string picpath = null;
+            if (InputsValidator.ValidateDate(dob))
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    if (PictureValidator.Validate(file.ContentType, file.ContentLength))
+                    {
+                        string fname = Path.GetFileName(file.FileName);
+                        string uPicPath = Path.Combine("/Content/UserPic", fname);
+                        file.SaveAs(Server.MapPath(uPicPath));
+                        picpath = uPicPath;
+                    }
+                    else
+                    {
+                        Response.StatusCode = 5;
+                    }
+                }
+                var cur = userLogic.Add(new User(title, DateTime.Parse(dob), picpath));
+                if (cur!=null)
+                {
+                    Response.Write(Json.Encode(cur));
+                }
+                else
+                {
+                    Response.StatusCode = 400;
+                }
+            }
+        }
+    }
+}
+
+

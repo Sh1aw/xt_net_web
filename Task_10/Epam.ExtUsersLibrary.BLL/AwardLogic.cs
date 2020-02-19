@@ -20,7 +20,11 @@ namespace Epam.ExtUsersLibrary.BLL
 
         public Award Add(Award award)
         {
-            return _awardDao.Add(award);
+            if (!String.IsNullOrEmpty(award.Name))
+            {
+                return _awardDao.Add(award);
+            }
+            return null;
         }
 
         public IEnumerable<Award> GetAll()
@@ -30,7 +34,21 @@ namespace Epam.ExtUsersLibrary.BLL
 
         public int Remove(int id)
         {
-            return _awardDao.Remove(id);
+            var current = _awardDao.GetById(id);
+            if (current!=null)
+            {
+                if (current.UserIds.Count>0)
+                {
+                    return 6;
+                }
+                else
+                {
+                    _awardDao.Remove(id);
+                    return 200;
+                }
+            }
+
+            return 400;
         }
 
         public Award GetById(int id)
@@ -40,17 +58,23 @@ namespace Epam.ExtUsersLibrary.BLL
 
         public Award Update(int awardId, string name, string picPath)
         {
-            return _awardDao.Update(awardId, name, picPath);
+            var current = _awardDao.GetById(awardId);
+            if (current!=null)
+            {
+                if (!String.IsNullOrEmpty(name))
+                {
+                    if (String.IsNullOrEmpty(picPath) && !String.IsNullOrEmpty(current.PicPath))
+                    {
+                        picPath = current.PicPath;
+                    }
+                    return _awardDao.Update(awardId, name, picPath);
+                }
+
+                return null;
+            }
+
+            return null;
         }
 
-        public void GiveAwardUser(int awardId, int userId)
-        {
-            _awardDao.GiveAwardUser(awardId,userId);
-        }
-
-        public void RemoveAwardUser(int awardId, int userId)
-        {
-            _awardDao.RemoveAwardUser(awardId,userId);
-        }
     }
 }

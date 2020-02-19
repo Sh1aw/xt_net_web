@@ -99,29 +99,41 @@
     <Content Include="Scripts\CommonScipts.js" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Pages\Controllers\UserController\AddUserController.cshtml" />
-    <Content Include="Pages\Controllers\UserController\DeleteUserController.cshtml" />
-    <Content Include="Pages\Controllers\UserController\GiveUserAwardController.cshtml" />
-    <Content Include="Pages\Controllers\UserController\UpdateUserController.cshtml" />
-    <Content Include="Pages\Controllers\UserController\RemoveUserAwardController.cshtml" />
-    <Content Include="Pages\Controllers\AwardController\DeleteAwardController.cshtml" />
-    <Content Include="Pages\Controllers\AwardController\UpdateAwardController.cshtml" />
-    <Content Include="Pages\Controllers\AwardController\DisAwardController.cshtml" />
+    <Content Include="Pages\Handlers\UserActionHandler\AddUser.cshtml" />
+    <Content Include="Pages\Handlers\UserActionHandler\DeleteUser.cshtml" />
+    <Content Include="Pages\Handlers\UserActionHandler\GiveUserAward.cshtml" />
+    <Content Include="Pages\Handlers\UserActionHandler\UpdateUser.cshtml" />
+    <Content Include="Pages\Handlers\UserActionHandler\RemoveUserAward.cshtml" />
+    <Content Include="Pages\Handlers\AwardActionHandler\DeleteAward.cshtml" />
+    <Content Include="Pages\Handlers\AwardActionHandler\UpdateAward.cshtml" />
+    <Content Include="Pages\Handlers\AwardActionHandler\DisAward.cshtml" />
+    <Content Include="Pages\RegistrationPage.cshtml" />
+    <Content Include="Pages\Handlers\VisitorActionHandler\Registration.cshtml" />
+    <Content Include="Pages\Handlers\VisitorActionHandler\Authorization.cshtml" />
+    <Content Include="Pages\LogInPage.cshtml" />
+    <Content Include="Pages\Handlers\VisitorActionHandler\LogOut.cshtml" />
+    <Content Include="Pages\AdminPanel.cshtml" />
+    <Content Include="Pages\Handlers\VisitorActionHandler\SwitchRole.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\UserScripts.js" />
+    <Content Include="Scripts\VisitorScripts.js" />
     <Content Include="styles.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DefaultAdminChecker.cs" />
+    <Compile Include="Common\InputsValidator.cs" />
+    <Compile Include="Common\MyRoleProvider.cs" />
+    <Compile Include="Common\PictureDefaulting.cs" />
     <Compile Include="Common\PictureValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Pages\Awards.cshtml" />
-    <Content Include="Pages\Controllers\AwardController\AddAwardController.cshtml" />
+    <Content Include="Pages\Handlers\AwardActionHandler\AddAward.cshtml" />
     <Content Include="Pages\Layouts\_LayoutPage1.cshtml" />
     <Content Include="Pages\Users.cshtml" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />

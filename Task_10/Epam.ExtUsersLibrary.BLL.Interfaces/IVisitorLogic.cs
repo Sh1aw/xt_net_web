@@ -15,7 +15,8 @@ namespace Epam.ExtUsersLibrary.BLL.Interfaces
 
         int Remove(int id);
         IEnumerable<Visitor> GetAll();
-        void MakeAdmin(int id);
-        void MakeCommon(int id);
+        void GiveRole(int id,string role);
+        Visitor GetByLogin(string login);
+        void DepriveRole(int id,string role);
     }
 }

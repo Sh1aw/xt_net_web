@@ -37,5 +37,12 @@ namespace Epam.ExtUsersLibrary.BLL.Ioc
         public static IVisitorLogic VisitorLogic => _visitorLogic ?? (_visitorLogic = new VisitorLogic(VisitorDao));
 
         
+        private static IUserAwardDao _userAwardDao;
+        public static IUserAwardDao UserAwardDao => _userAwardDao ?? (_userAwardDao = new UserAwardDao());
+
+        private static IUserAwardLogic _userAwardLogic;
+        public static IUserAwardLogic UserAwardLogic => _userAwardLogic ?? (_userAwardLogic = new UserAwardLogic(UserDao,AwardDao,UserAwardDao));
+
+
     }
 }

@@ -9,7 +9,7 @@
     if (validateInput(awardName, 'main', 'Award name can`t be empty!')) {
         $.ajax({
             type: "POST",
-            url: "/Pages/Controllers/AwardController/AddAwardController",
+            url: "/Pages/Handlers/AwardActionHandler/AddAward",
             processData: false,
             contentType: false,
             data: form_data,
@@ -20,12 +20,12 @@
             },
             success: function (data) {
                 var data1 = JSON.parse(data);
-                var answer = `<tr id=a-${data1.Id} class="d-flex">
-                                    <td class="col-1">${data1.Id}</td>
-                                    <td class="col-2" rel="awardPic"><img src="${data1.PicPath}" width="50" height="50" /></td>
-                                    <td class="col-5" rel="name">${data1.Name}</td>
-                                    <td class="col-2"><img class="editUserBtn" src="/Content/icons/pencil.svg"></td>
-                                    <td class="col-2"><img class="delUserBtn" src="/Content/icons/x-circle.svg"></td>
+                var answer = `<tr id=a-${data1.Id}>
+                                    <td class="align-middle">${data1.Id}</td>
+                                    <td class="align-middle" rel="awardPic"><img src="${data1.PicPath}" width="50" height="50" /></td>
+                                    <td class="align-middle" rel="name">${data1.Name}</td>
+                                    <td class="align-middle"><img class="editUserBtn" src="/Content/icons/pencil.svg"></td>
+                                    <td class="align-middle"><img class="delUserBtn" src="/Content/icons/x-circle.svg"></td>
                                   </tr>`;
                 $("table").append(answer);
             }
@@ -63,7 +63,7 @@ $("#updateAward").click(function (e) {
         form_data.append('name', newName);
         $.ajax({
             type: "POST",
-            url: "/Pages/Controllers/AwardController/UpdateAwardController",
+            url: "/Pages/Handlers/AwardActionHandler/UpdateAward",
             data: form_data,
             processData: false,
             contentType: false,
@@ -99,16 +99,17 @@ $("table").click(function (e) {
     let awardId = target.closest("tr").id.split('-')[1];
     $.ajax({
         type: "POST",
-        url: "/Pages/Controllers/AwardController/DeleteAwardController",
+        url: "/Pages/Handlers/AwardActionHandler/DeleteAward",
         dataType: "json",
         data: { aid: awardId },
         statusCode: {
             6: function (data) {
                 var data1 = JSON.stringify(data.responseJSON);
-                if (confirm("Some users already have this award. If you wana continie deleting, this users lose this award!")) {
+                if (confirm("Some users already have this award. " +
+                    "If you wana continie deleting, this users lose this award!")) {
                     $.ajax({
                         type: "POST",
-                        url: "/Pages/Controllers/AwardController/DisAwardController",
+                        url: "/Pages/Handlers/AwardActionHandler/DisAward",
                         data: { aid: awardId, uids: data1 },
                         success: function () {
                             $("#a-" + awardId).remove();
@@ -116,8 +117,11 @@ $("table").click(function (e) {
                     });
                 }
             },
+            200:function () {
+                $("#a-" + awardId).remove();
+            }
         },
-        complete: function () {
+        success: function () {
             $("#a-" + awardId).remove();
         }
     });

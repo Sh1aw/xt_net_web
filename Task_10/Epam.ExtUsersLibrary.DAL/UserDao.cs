@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Epam.ExtUsersLibrary.Dao.Interfaces;
 using Epam.ExtUsersLibrary.Entities;
 using Newtonsoft.Json;
@@ -15,7 +13,7 @@ namespace Epam.ExtUsersLibrary.DAL
     {
         private static readonly string FolderName = ConfigurationManager.AppSettings.Get("DestFolder");
         private static readonly string FileName = ConfigurationManager.AppSettings.Get("NameUserFile");
-        private static readonly string _path = Path.Combine(FolderName,FileName); //default path is "C:\\dataStorage",
+        internal static readonly string _path = Path.Combine(FolderName,FileName); //default path is "C:\\dataStorage",
                                                                                   //you can change folder path and files names in Web.config
         internal static readonly Dictionary<int, User> _users = JsonSynchronizer.GetJSONData<User>(_path,FolderName);
 
@@ -68,41 +66,5 @@ namespace Epam.ExtUsersLibrary.DAL
             return current;
         }
 
-        public void GiveUserAward(int userId, int awardId)
-        {
-            if (_users.ContainsKey(userId) && AwardDao._awards.ContainsKey(awardId))
-            {
-                if (_users[userId].AwardsIds.Contains(awardId))
-                {
-                    throw new ArgumentException("This user already have this award");
-                }
-                _users[userId].AwardsIds.Add(awardId);
-                JsonSynchronizer.SynchronizeJSON(_path, _users);
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Invalid User or Award IDs!");
-            }
-        }
-
-        public void RemoveUserAward(int userId, int awardId)
-        {
-            if (_users.ContainsKey(userId) && AwardDao._awards.ContainsKey(awardId))
-            {
-                if (_users[userId].AwardsIds.Contains(awardId))
-                {
-                    _users[userId].AwardsIds.Remove(awardId);
-                    JsonSynchronizer.SynchronizeJSON(_path, _users);
-                }
-                else
-                {
-                    throw new ArgumentException("This user haven`t this award");
-                }
-            }
-            else
-            {
-                throw new ArgumentOutOfRangeException("Invalid User or Award IDs!");
-            }
-        }
     }
 }

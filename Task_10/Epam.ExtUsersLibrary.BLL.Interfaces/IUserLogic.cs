@@ -1,9 +1,6 @@
 ﻿using Epam.ExtUsersLibrary.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Epam.ExtUsersLibrary.BLL.Interfaces
 {
@@ -16,7 +13,5 @@ namespace Epam.ExtUsersLibrary.BLL.Interfaces
         int Remove(int id);
         IEnumerable<User> GetAll();
         User Update(int userId, string name, DateTime dob,string upic);
-        void GiveUserAward(int userId, int awardId);
-        void RemoveUserAward(int userId, int awardId);
     }
 }
