@@ -1,0 +1,39 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    if (IsAjax)
+    {
+        var awardLogic = DependencyResolver.AwardLogic;
+        if (IsPost)
+        {
+            var name = Request.Form["name"];
+            var stringAid = Request.Form["aid"];
+            var file = Request.Files["aPic"];
+            if (InputsValidator.ValidateId(stringAid))
+            {
+                var aid = Int32.Parse(stringAid);
+                if (file == null || PictureValidator.Validate(file.ContentType, file.ContentLength))
+                {
+                    var current = awardLogic.Update(aid, name,ImageToBinaryConverter.ConvertToBinary(file));
+                    if (current != null)
+                    {
+                        Response.StatusCode = 7;
+                    }
+                    else
+                    {
+                        Response.StatusCode = 4;
+                    }
+
+                }
+                else
+                {
+                    Response.StatusCode = 6;
+                }
+
+            }
+        }
+    }
+
+}
+
+

@@ -1,0 +1,23 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    if (IsPost)
+    {
+        var visitorLogic = DependencyResolver.VisitorLogic;
+        var userName = Request["login"];
+        var password = Request["password"];
+        var isDefAdmin = DefaultAdminChecker.CheckDefault(userName, password);
+        var user = visitorLogic.GetByLogin(userName);
+        if ((user!=null && user.Password.Equals(password))||isDefAdmin)
+        {
+            FormsAuthentication.SetAuthCookie(userName,true);
+            Response.Redirect("~/Pages/Users");
+        }
+        else
+        {
+            Response.Redirect("~/Pages/WrongPass");
+        }
+
+    }
+}
+

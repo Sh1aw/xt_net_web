@@ -1,0 +1,77 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    Layout = "~/Pages/Layouts/_LayoutPage1.cshtml";
+    var awardLogic = DependencyResolver.AwardLogic;
+    var allAwards = awardLogic.GetAll().OrderBy(u=>u.Id);;
+    Page.Tittle = "Awards";
+    //awardLogic.Remove(7);
+    if (!User.IsInRole("admin"))
+    {
+        Response.Redirect("~/Pages/Users");
+    }
+}
+<div class="main">
+    <h1>Awards List</h1>
+    <hr/>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 20%">Pic</th>
+            <th style="width: 30%">Name</th>
+            <th style="width: 10%">Update</th>
+            <th style="width: 10%">Delete</th>
+        </tr>
+        </thead>
+        @foreach (var award in allAwards)
+        {
+            <tr id="a-@award.Id">
+                <td class="align-middle">@award.Id</td>
+                <td class="align-middle" rel="awardPic"><img src='@PictureDefaulting.GetBynaryImage(award.ImageBytes)' width="50" height="50"/></td>
+                <td class="align-middle" rel="name">@award.Name</td>
+                <td class="align-middle"><img class="editUserBtn" src="/Content/icons/pencil.svg"></td>
+                <td class="align-middle"><img class="delUserBtn" src="/Content/icons/x-circle.svg"></td>
+            </tr>
+        }
+    </table>
+    <div class="text-center"><button style="margin: 10px" id="showContrlPanel" class="btn btn-info">Add New</button></div>
+    <div>
+        <div class="cntrl_panel panel_template">
+            <form>
+                <h3>Adding new</h3>
+                <hr />
+                <div class="form-group">
+                    <label for="nameAward">Award Name:</label>
+                    <input id="nameAward" class="form-control form-control-sm" type="text" name="title" />
+                </div>
+                <div class="form-group mb-2">
+                    <label>Picture:</label>
+                    <input class="form-control form-control-sm" id="awardPic" type="file" name="title" />
+                </div>
+                <input id="addAwardBut" class="btn btn-info align-items-center" type="submit" name="buttonSubmit" value="Add" />
+            </form>
+        </div>
+        <div class="edit_panel panel_template">
+            <form>
+                <h3>Editing</h3>
+                <hr/>
+                <div class="form-group">
+                    <label>Award Name:</label>
+                    <input type="text" class="form-control form-control-sm" placeholder="Title" id="edit_name" value="">
+                </div>
+                <div class="form-group mb-2">
+                    <label>Picture:</label>
+                    <input class="form-control form-control-sm" id="awardPicEdit" type="file" name="title"/>
+                </div>
+                <button id="updateAward" class="btn btn-info align-items-center">Update Award Info</button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<script src="/Scripts/jquery-3.4.1.min.js"></script>
+<script src="/Scripts/CommonScipts.js"></script>
+<script src="~/Scripts/AwardScripts.js"></script>
+

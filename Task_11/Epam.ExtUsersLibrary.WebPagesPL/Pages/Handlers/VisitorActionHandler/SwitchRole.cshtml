@@ -1,0 +1,31 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    var visitorLogic = DependencyResolver.VisitorLogic;
+    string stringVisitorId = Request["vid"];
+    if (InputsValidator.ValidateId(stringVisitorId))
+    {
+        var visitorId = Int32.Parse(stringVisitorId);
+        var current = visitorLogic.GetById(visitorId);
+        if (current != null)
+        {
+            if (current.IdRole.Equals(2) || current.IdRole==null)
+            {
+                visitorLogic.GiveRole(current.Id,1);
+            }
+            else
+            {
+                visitorLogic.GiveRole(current.Id, 2);
+            }
+            Response.Write(Json.Encode(current));
+        }
+        else
+        {
+            Response.StatusCode = 400;
+        }
+    }
+    else
+    {
+        Response.StatusCode = 409;
+    }
+}

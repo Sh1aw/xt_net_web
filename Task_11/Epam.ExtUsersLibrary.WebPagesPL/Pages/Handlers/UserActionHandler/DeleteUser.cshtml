@@ -1,0 +1,25 @@
+﻿@using System.Activities.Expressions
+@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    if (IsAjax)
+    {
+        var userLogic = DependencyResolver.UserLogic;
+        if (IsPost)
+        {
+            var stringUid = Request.Form["id"];
+            if (InputsValidator.ValidateId(stringUid))
+            {
+                var uid = Int32.Parse(stringUid);
+                int responceStatus = userLogic.Remove(uid);
+                Response.StatusCode = responceStatus;
+            }
+            else
+            {
+                Response.StatusCode = 404;
+            }
+        }
+    }
+}
+
+

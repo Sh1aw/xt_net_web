@@ -1,0 +1,34 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.Entities;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common;
+@{
+    if (IsAjax)
+    {
+        var awardLogic = DependencyResolver.AwardLogic;
+        if (IsPost)
+        {
+            var title = Request.Form["name"];
+            var file = Request.Files["aPic"];
+            if (file == null || PictureValidator.Validate(file.ContentType, file.ContentLength))
+            {
+                var current = awardLogic.Add(new Award(title, ImageToBinaryConverter.ConvertToBinary(file)));
+                if (current != null)
+                {
+                    Response.StatusCode = 7;
+                }
+                else
+                {
+                    Response.StatusCode = 404;
+                }
+            }
+            else
+            {
+                Response.StatusCode = 5;
+            }
+        }
+
+    }
+}
+
+
+

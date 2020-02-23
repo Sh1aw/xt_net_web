@@ -1,0 +1,32 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    if (IsAjax)
+    {
+
+        var userAwardLogic = DependencyResolver.UserAwardLogic;
+        var awardLogic = DependencyResolver.AwardLogic;
+        if (IsPost)
+        {
+            var stringUid = Request.Form["uId"];
+            var stringAid = Request.Form["aId"];
+            if (InputsValidator.ValidateId(stringUid) && InputsValidator.ValidateId(stringAid))
+            {
+                var uid = int.Parse(stringUid);
+                var aid = int.Parse(stringAid);
+                int responceCode = userAwardLogic.GiveUserAward(uid, aid);
+                if (responceCode.Equals(200))
+                {
+                    var answer = awardLogic.GetById(aid);
+                    Response.Write(Json.Encode(answer));
+                }
+                else
+                {
+                    Response.StatusCode = responceCode;
+                }
+            }
+        }
+    }
+}
+
+

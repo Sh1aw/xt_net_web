@@ -1,0 +1,154 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.Entities;
+@using Epam.ExtUsersLibrary.WebPagesPL.Common
+@{
+    Layout = "~/Pages/Layouts/_LayoutPage1.cshtml";
+    var userLogic = DependencyResolver.UserLogic;
+    var awardLogic = DependencyResolver.AwardLogic;
+    var userAwardLogic = DependencyResolver.UserAwardLogic;
+    var allAwards = awardLogic.GetAll();
+    var allUsers = userLogic.GetAll().OrderBy(u=>u.Id);
+    var allRels = userAwardLogic.GetAll();
+    Dictionary<User,IEnumerable<Award>> diction = new Dictionary<User, IEnumerable<Award>>();
+    foreach (var user in allUsers)
+    {
+        IEnumerable<Award> awardsObj2 = 
+            allAwards.Where(a => allRels
+                .Where(al=>al.UserId.Equals(user.Id))
+                .Select(all=>all.AwardId)
+                .Contains(a.Id));
+        diction.Add(user,awardsObj2);
+    }
+    Page.Tittle = "Users";
+}
+<div class="main">
+    <h1>Users List</h1>
+    <hr/>
+    <table class="table table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th style="width:5%">ID</th>
+                <th style="width:10%">Pic</th>
+                <th style="width:10%">Name</th>
+                <th style="width:10%">Age</th>
+                <th style="width:15%">Date of Birth</th>
+                @if (User.IsInRole("admin"))
+                {
+                    <th style="width: 10%">Edit</th>
+                    <th style="width: 10%">Delete</th>
+                }
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <th style="width:30%">Awards</th>
+                }
+            </tr>
+        </thead>
+        @foreach (KeyValuePair<User, IEnumerable<Award>> keyValue in diction)
+        {
+        <tr id="u-@keyValue.Key.Id">
+            <td>@keyValue.Key.Id</td>
+            <td class="align-middle" rel="userPic"><img src="@PictureDefaulting.GetBynaryImage(keyValue.Key.ImageBytes)" width="50" height="50"/></td>
+            <td class="align-middle" rel="name">@keyValue.Key.Name</td>
+            <td class="align-middle"  rel="age">@keyValue.Key.Age</td>
+            <td class="align-middle" rel="dob">@keyValue.Key.DateOfBirth.ToShortDateString()</td>
+            @if (User.IsInRole("admin"))
+            {
+                <td class="align-middle"><img class="editUserBtn" src="~/Content/icons/pencil.svg"/></td>
+                <td class="align-middle"><img class="delUserBtn" src="~/Content/icons/x-circle.svg"/></td>
+            }
+            @if (User.Identity.IsAuthenticated)
+            {
+                <th class="align-middle" rel="awards">
+                    <ol>
+                        @{
+                            if (keyValue.Value.Any())
+                            {
+                                foreach (var award in keyValue.Value)
+                                {
+                                    <li id="aw-@award.Id" style="clear: both">
+                                        <span>@award.Name</span>
+                                        @if (User.IsInRole("admin"))
+                                        {
+                                            <span style="float: right">
+                                                <img class="userAwardRemoving" src="~/Content/icons/x-circle.svg"/>
+                                            </span>
+                                        }
+                                    </li>
+                                }
+                            }
+                        }
+                    </ol>
+                </th>
+            }
+        </tr>
+        }
+    </table>
+    
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="text-center">
+            <button style="margin: 10px" id="showContrlPanel" class="btn btn-info">Add New</button>
+        </div>
+        <div class="panel_container">
+            <div class="cntrl_panel panel_template">
+                <form>
+                    <h3>Adding new</h3>
+                    <div class="form-group">
+                        <label>User Name:</label>
+                        <input class="form-control form-control-sm" id="userName" type="text" name="title" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Date of Birth:</label>
+                        <input class="form-control form-control-sm" id="userDob" type="date" name="title" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Picture:</label>
+                        <input class="form-control-file" id="userPic" type="file" name="title" />
+                    </div>
+                    <input class="btn btn-info align-items-center" id="addUserBtn" type="submit" name="buttonSubmit" value="Add User" />
+                </form>
+            </div>
+            <div class="edit_panel panel_template" style="display: none">
+                <form>
+                    <h3>Editing</h3>
+                    <div class="form-group">
+                        <label for="edit_name">User Name:</label>
+                        <input class="form-control form-control-sm" type="text" placeholder="Name" id="edit_name" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_dob">Date of Birth:</label>
+                        <input class="form-control form-control-sm" type="date" id="edit_dob" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Picture: jpg or png, less then 3mb size</label>
+                        <input class="form-control-file" id="userPicEdit" type="file" name="title" />
+                    </div>
+                    <button id="updateUser" class="btn btn-info"> Update User Info</button>
+                    <hr />
+                    <div class="form-group">
+                        <label>Reward this user:</label>
+                        @if (allAwards.Any())
+                        {
+                            <select class="form-control form-control-sm" style="width: 50%">
+                                @foreach (var award in allAwards)
+                                {
+                                    <option value="@award.Id">@award.Name</option>
+                                }
+                            </select>
+                            <button class="btn btn-info" id="giveUserSomeAward">Give Award</button>
+                        }
+                        else
+                        {
+                            <input class="form-control form-control-sm" type="text" value="First add some awards on the Awards Page" disabled="disabled">
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="/Scripts/jquery-3.4.1.min.js"></script>
+<script src="/Scripts/CommonScipts.js"></script>
+<script src="~/Scripts/UserScripts.js"></script>
+

@@ -1,0 +1,120 @@
+﻿.panel_template {
+    padding: 5px;
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    margin: auto;
+    display: none;
+}
+.cntrl_panel label {
+    text-align: left;
+}
+td > img {
+    cursor: pointer;
+}
+table {
+    border: 10px white solid;
+    box-shadow: 0 0 5px 5px lightgray;
+    padding: 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+h1 {
+    text-align: center;
+}
+.cntrl_panel btn {
+    margin: auto;
+}
+.myalert {
+    margin: 10px 0 0 0;
+}
+.hiden {
+    display: none;
+}
+table ol {
+    list-style-type: none;
+    font-weight: lighter;
+    font-size: 12px;
+}
+.userAwardRemoving {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+.editUserBtn {
+    width: 32px;
+    height: 32px;
+}
+.delUserBtn {
+    width: 32px;
+    height: 32px;
+}
+
+.registration_form {
+    margin: 185px auto 0;
+    width: 300px;
+    top: 50%;
+    height: 370px;
+    box-shadow: 0 0 5px 5px darkgray;
+    padding: 20px;
+}
+
+.registration_form input[type="submit"]{
+    margin-top: 20px; 
+}
+
+.registration_form h3 {
+    text-align: center;
+}
+header {
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+header  ul {
+    list-style-type: none;
+    font-family: Segoe UI;
+}
+header  ul  li {
+    display: inline-block;
+    margin-right: 10px; 
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+header ul li a {
+    text-decoration: none;
+    color: white;
+}
+header ul li a :hover{
+    color: gray;
+    text-decoration: none;
+}
+header ul li a :link{
+    color: gray;
+    text-decoration: none;
+}
+header span{
+    color: aliceblue;
+}
+.main_menu {
+    margin-right: 50px;
+}
+.login_block {
+    border-left: 1px white solid; 
+    align-self: end;
+    float: right;
+}
+.regRef {
+    margin: 10px auto;
+    text-align: center
+}
+.changeRole{
+    cursor: pointer;
+    font-weight: bold;
+    color:crimson;
+}
+

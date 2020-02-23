@@ -1,0 +1,25 @@
+﻿@using Epam.ExtUsersLibrary.BLL.Ioc;
+@using Epam.ExtUsersLibrary.Entities;
+@{
+    if (IsPost)
+    {
+        var visitorLogic = DependencyResolver.VisitorLogic;
+        var userName = Request["login"];
+        var password = Request["password"];
+
+        var user = visitorLogic.GetByLogin(userName);
+        if (user==null)
+        {
+            var current = visitorLogic.Add(new Visitor(userName, password,1));
+            FormsAuthentication.SetAuthCookie(userName,true);
+            Response.Redirect("~/Pages/Users");
+        }
+        else
+        {
+            Response.Write("Такой пользователь уже существует");
+            Response.Redirect("~/Pages/RegistrationPage");
+        }
+
+    }
+}
+

@@ -17,18 +17,10 @@
                 5: function () {
                     alert("Wrong img format");
                 },
+                7: function(){
+                    location.reload();
+                }
             },
-            success: function (data) {
-                var data1 = JSON.parse(data);
-                var answer = `<tr id=a-${data1.Id}>
-                                    <td class="align-middle">${data1.Id}</td>
-                                    <td class="align-middle" rel="awardPic"><img src="${data1.PicPath}" width="50" height="50" /></td>
-                                    <td class="align-middle" rel="name">${data1.Name}</td>
-                                    <td class="align-middle"><img class="editUserBtn" src="/Content/icons/pencil.svg"></td>
-                                    <td class="align-middle"><img class="delUserBtn" src="/Content/icons/x-circle.svg"></td>
-                                  </tr>`;
-                $("table").append(answer);
-            }
         });
     }
     $(".cntrl_panel form")[0].reset();
@@ -71,14 +63,12 @@ $("#updateAward").click(function (e) {
                 4: function () {
                     alert("Error, this award was removed, or not created");
                 },
-                5: function () {
+                6: function () {
                     alert("Wrong img format");
                 },
-            },
-            success: function (data) {
-                var data1 = JSON.parse(data);
-                $("#a-" + awardId)[0].querySelector("[rel = 'name']").textContent = data1.Name;
-                $("#a-" + awardId)[0].querySelector("[rel = 'awardPic'] img").setAttribute("src", data1.ImageBytes);
+                7: function() {
+                    location.reload();
+                }
             }
         });
     }
